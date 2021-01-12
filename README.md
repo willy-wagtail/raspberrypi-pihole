@@ -1,4 +1,4 @@
-# Setting up Raspberry Pi
+# Securing Raspberry Pi
 
 ### Sources
 
@@ -58,3 +58,22 @@ Use ufw (uncomplicated firewall). Need to be careful not to lock yourself out. S
 ### Brute-force detection
 
 Use fail2ban which watchs system logs for repeated login attempts and add a firewall rule to prevent further access for a specified time. See links to rasp pi doc and YouTube video above.
+
+
+# Installing Docker
+
+### Sources
+
+https://www.raspberrypi.org/blog/docker-comes-to-raspberry-pi/
+
+https://blog.alexellis.io/getting-started-with-docker-on-raspberry-pi/
+
+### Install Docker
+
+Run `curl -sSL https://get.docker.com | sh`, then run `sudo gpasswd -a pi docker`.
+
+### Install Docker Compose
+
+https://dev.to/rohansawant/installing-docker-and-docker-compose-on-the-raspberry-pi-in-5-simple-steps-3mgl
+
+Run `sudo apt install libffi-dev libssl-dev python3-pip`, then run `sudo pip3 -v install docker-compose`
