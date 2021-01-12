@@ -3,6 +3,7 @@
 ### Sources
 
 https://www.raspberrypi.org/documentation/configuration/security.md
+
 https://www.youtube.com/watch?v=ukHcTCdOKrc
 
 ### Change password for pi user
@@ -22,7 +23,7 @@ Finally, check the new user is capable of logging in to the raspberrypi using a 
 
 We could delete the pi accound instead of locking it, but some software relies on the pi account which is why we aren't deleting it. 
 
-Log onto `<account_name>`, then run `sudo passwd -l pi`.
+Log onto the administrative superuser account set up in the previous step, then run `sudo passwd -l pi`.
 
 ### Updating and upgrading rasp pi OS
 
