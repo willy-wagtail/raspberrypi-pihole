@@ -6,8 +6,6 @@ Sources: https://hub.docker.com/r/pihole/pihole/ and https://github.com/pi-hole/
 
 The docker-compose.yaml sets pihole's password to whatever the environment variable  `$PIHOLE_PASSWORD` is. Set it on the pi by running: `export PIHOLE_PASSWORD=’<password>’`.
 
-The docker-compose.yaml also sets pihole's timezone to whatever the environment variable  `$PIHOLE_TIMEZONE` is. Set it on the pi by running: `export PIHOLE_TIMEZONE=’Europe/London’`.
-
 Run the docker-compose.yml file using command `docker-compose up -d`.
 
 ### Whitelist common false-positives

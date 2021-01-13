@@ -12,7 +12,7 @@ services:
       - "80:80/tcp"
       - "443:443/tcp"
     environment:
-      TZ: $PIHOLE_TIMEZONE
+      TZ: 'Europe/London'
       WEBPASSWORD: $PIHOLE_PASSWORD 
     # Volumes store your data between container upgrades
     volumes:
