@@ -15,7 +15,7 @@ services:
       TZ: 'Europe/London'
       WEBPASSWORD: $PIHOLE_PASSWORD
       PIHOLE_DNS_: 127.0.0.1#5335
-      DNSSEC: true
+      DNSSEC: 'true'
     # Volumes store your data between container upgrades
     volumes:
       - './etc-pihole/:/etc/pihole/'
