@@ -1,6 +1,41 @@
+# Setting Up Raspberry Pi
+
+
+### Sources
+https://www.raspberrypi.org/documentation/installation/installing-images/README.md
+
+https://www.raspberrypi.org/documentation/remote-access/ssh/README.md
+
+https://www.raspberrypi.org/documentation/configuration/wireless/headless.md
+
+### Preparing SD Card
+
+Use Raspberry Pi Imager to flash OS onto SD card.
+
+To enable ssh, create empty file named “ssh” at root level on your SD card before the first boot.
+
+To automatically connect to a wifi network, add a wpa_supplicant.conf file at root level before first boot with the following:
+
+```
+ctrl_interface=DIR=/var/run/wpa_supplicant GROUP=netdev
+update_config=1
+country=<Insert 2 letter ISO 3166-1 country code here>
+
+network={
+ ssid="<Name of your wireless LAN>"
+ psk="<Password for your wireless LAN>"
+}
+```
+
+### First boot
+
+Ssh into the raspberry pi using the username "pi" and password "raspberry".
+
 # Securing Raspberry Pi
 
 ### Sources
+
+https://www.raspberrypi.org/documentation/raspbian/updating.md
 
 https://www.raspberrypi.org/documentation/configuration/security.md
 
@@ -21,13 +56,13 @@ Finally, check the new user is capable of logging in to the raspberrypi using a 
 
 ### Lock the pi account
 
-We could delete the pi accound instead of locking it, but some software relies on the pi account which is why we aren't deleting it. 
+We could delete the pi accound instead of locking it, but some software still relies on the pi account to work.
 
-Log onto the administrative superuser account set up in the previous step, then run `sudo passwd -l pi`.
+Log onto the administrative superuser account set up in the previous step, then run `sudo passwd --lock pi`.
 
 ### Updating and upgrading rasp pi OS
 
-Run `sudo apt update`, then `sudo apt full-upgrade`, and finally `sudo apt clean`.
+Run `sudo apt update`, then `sudo apt full-upgrade -y`, and finally `sudo apt clean` to clean up the downloaded package files.
 
 ### Kill unnecessary system services
 
@@ -45,11 +80,17 @@ If you wanted to enable a service again by running `sudo systemctl enable --now 
 
 Run `sudoedit /etc/ssh/sshd_config`.
 
-Under the line “# Authentication”, add `AllowUsers <account_name>`.
+Under the line “# Authentication”, add `AllowUsers <account_name1> <account_name2>`.
+
+After the change, you will need to restart the sshd service using `sudo systemctl restart ssh` or rebooting.
 
 ### Automatic rasp pi OS update and upgrading
 
-You can use unattended-upgrades with rasp pi specific config change. Could also use a cron job. Not for production because of potential problems. See link to YouTube video above.
+Not for production because of potential problems.
+
+Use unattended-upgrades with raspberry pi specific config. Another option is to set up a cron job to run the update/upgrade commands. 
+
+See link to YouTube video above for more details.
 
 ### Firewall
 
