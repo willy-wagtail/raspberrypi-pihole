@@ -16,14 +16,16 @@ To enable ssh, create empty file called `.ssh` at root level on your SD card bef
 
 To automatically connect to a wifi network, add a wpa_supplicant.conf file at root level before first boot with the following:
 
-  ctrl_interface=DIR=/var/run/wpa_supplicant GROUP=netdev
-  update_config=1
-  country=<Insert 2 letter ISO 3166-1 country code here>
+```
+ctrl_interface=DIR=/var/run/wpa_supplicant GROUP=netdev
+update_config=1
+country=<Insert 2 letter ISO 3166-1 country code here>
 
-  network={
-   ssid="<Name of your wireless LAN>"
-   psk="<Password for your wireless LAN>"
-  }
+network={
+ ssid="<Name of your wireless LAN>"
+ psk="<Password for your wireless LAN>"
+}
+```
 
 ### First boot
 
@@ -181,9 +183,11 @@ Change directories to be in the `/raspberrypi` directory by running, for example
 
 Create a `.env` file by running `sudo touch .env` in the same directory as the docker-compose.yml file. Populate it with the following environment variables which are referred to by the docker-componse.yml file:
 
->  PIHOLE_PASSWORD=password
->  PIHOLE_TIMEZONE=Europe/London
->  PIHOLE_ServerIP=<IP address of the host raspberry pi - e.g. 192.168.0.2>
+```
+PIHOLE_PASSWORD=password
+PIHOLE_TIMEZONE=Europe/London
+PIHOLE_ServerIP=<IP address of the host raspberry pi - e.g. 192.168.0.2>
+```
 
 In the same directory as the docker-compose.yml, run `docker-compose up -d`.
 
