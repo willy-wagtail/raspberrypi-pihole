@@ -84,14 +84,6 @@ Under the line “# Authentication”, add `AllowUsers <account_name1> <account_
 
 After the change, you will need to restart the sshd service using `sudo systemctl restart ssh` or rebooting.
 
-### Automatic rasp pi OS update and upgrading
-
-Not for production because of potential problems.
-
-Use unattended-upgrades with raspberry pi specific config. Another option is to set up a cron job to run the update/upgrade commands. 
-
-See link to YouTube video above for more details.
-
 ### Firewall
 
 Use ufw (uncomplicated firewall). Need to be careful not to lock yourself out. See links to rasp pi doc and YouTube video above.
@@ -100,6 +92,13 @@ Use ufw (uncomplicated firewall). Need to be careful not to lock yourself out. S
 
 Use fail2ban which watchs system logs for repeated login attempts and add a firewall rule to prevent further access for a specified time. See links to rasp pi doc and YouTube video above.
 
+### Automatic package update and upgrade
+
+Not for production because of potential compatibility problems that may arise.
+
+Use unattended-upgrades with raspberry pi specific config. Another option is to set up a cron job to run the update/upgrade commands. 
+
+See link to YouTube video above for more details.
 
 # Installing Docker
 
@@ -109,9 +108,11 @@ https://www.raspberrypi.org/blog/docker-comes-to-raspberry-pi/
 
 https://blog.alexellis.io/getting-started-with-docker-on-raspberry-pi/
 
+https://sanderh.dev/setup-Docker-and-Docker-Compose-on-Raspberry-Pi/
+
 ### Install Docker
 
-Run `curl -sSL https://get.docker.com | sh`, then run `sudo gpasswd -a pi docker`.
+Run `curl -sSL https://get.docker.com | sh`, then run `sudo gpasswd -a pi docker`, replacing pi with whatever account is the main account.
 
 ### Install Docker Compose
 
@@ -119,11 +120,21 @@ https://dev.to/rohansawant/installing-docker-and-docker-compose-on-the-raspberry
 
 Run `sudo apt install libffi-dev libssl-dev python3-pip`, then run `sudo pip3 -v install docker-compose`
 
+# Pihole with Docker Compose
+
+### Sources
+
+https://hub.docker.com/r/pihole/pihole/ 
+
+https://github.com/pi-hole/docker-pi-hole
+
 ### Start Pihole in container
 
-Sources: https://hub.docker.com/r/pihole/pihole/ and https://github.com/pi-hole/docker-pi-hole
+Use the docker-compose.yaml in the above links. 
 
-The docker-compose.yaml sets pihole's password to whatever the environment variable  `$PIHOLE_PASSWORD` is. Set it on the pi by running: `export PIHOLE_PASSWORD=’<password>’`.
+Edit the file to uncomment the environment property `WEBPASSWORD` and point it to the host's environment variable - i.e. `WEBPASSWORD: $PIHOLE_PASSWORD`. If we don't give it a password, a random one will be generated.
+
+The docker-compose.yml sets pihole's password to whatever the environment variable `$PIHOLE_PASSWORD` is. Set it on the pi by running: `export PIHOLE_PASSWORD=’<password>’`.
 
 Run the `docker-compose.yml` in `/docker-pihole` directory using command `docker-compose up -d`.
 
