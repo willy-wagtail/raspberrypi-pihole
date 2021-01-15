@@ -10,22 +10,20 @@ https://www.raspberrypi.org/documentation/configuration/wireless/headless.md
 
 ### Preparing SD Card
 
-Use Raspberry Pi Imager to flash OS onto SD card.
+Use Raspberry Pi Imager to flash RaspberryPi OS onto SD card. The Lite version does not include the desktop GUI, so use that if you are setting the raspberry pi up headless.
 
-To enable ssh, create empty file named “ssh” at root level on your SD card before the first boot.
+To enable ssh, create empty file called `.ssh` at root level on your SD card before the first boot.
 
 To automatically connect to a wifi network, add a wpa_supplicant.conf file at root level before first boot with the following:
 
-```
-ctrl_interface=DIR=/var/run/wpa_supplicant GROUP=netdev
-update_config=1
-country=<Insert 2 letter ISO 3166-1 country code here>
+  ctrl_interface=DIR=/var/run/wpa_supplicant GROUP=netdev
+  update_config=1
+  country=<Insert 2 letter ISO 3166-1 country code here>
 
-network={
- ssid="<Name of your wireless LAN>"
- psk="<Password for your wireless LAN>"
-}
-```
+  network={
+   ssid="<Name of your wireless LAN>"
+   psk="<Password for your wireless LAN>"
+  }
 
 ### First boot
 
@@ -141,6 +139,8 @@ Run `curl -sSL https://get.docker.com | sh`, then run `sudo gpasswd -a pi docker
 
 Test it by showing version and running the hello-world container: `docker version` and `docker run hello-world`. Afterwards, clean up by removing the container and the hello-world image: `docker rm <container id>` then `docker image rm hello-world`.
 
+If you are not using the pi user, remember to add the account you wish to use to the docker usergroup. Check username is in the right groups using this command `grep '<username>' /etc/group`.
+
 ### Install Docker Compose
 
 Run `sudo apt install libffi-dev libssl-dev python3 python3-pip`, then `sudo apt remove python-configparser`, and finally run `sudo pip3 -v install docker-compose`. Reboot the pi.
@@ -149,32 +149,48 @@ Run `sudo apt install libffi-dev libssl-dev python3 python3-pip`, then `sudo apt
 
 ### Sources
 
+https://docs.pi-hole.net/
+
 https://hub.docker.com/r/pihole/pihole/ 
 
 https://github.com/pi-hole/docker-pi-hole
 
+https://docs.pi-hole.net/guides/unbound/ 
+
+https://github.com/chriscrowe/docker-pihole-unbound
+
+https://github.com/anudeepND/whitelist
+
 ### Start Pihole in container
+
+(Go to the next section if you want to start Pihole with Unbound. This is for starting Pihole in docker.)
 
 Use the docker-compose.yaml in the above links. 
 
 Edit the file to uncomment the environment property `WEBPASSWORD` and point it to the host's environment variable - i.e. `WEBPASSWORD: $PIHOLE_PASSWORD`. If we don't give it a password, a random one will be generated.
 
-The docker-compose.yml sets pihole's password to whatever the environment variable `$PIHOLE_PASSWORD` is. Set it on the pi by running: `export PIHOLE_PASSWORD=’<password>’`.
+The docker-compose.yml sets pihole's password to whatever the environment variable `$PIHOLE_PASSWORD` is. Set it on the pi by running: `export PIHOLE_PASSWORD=’<password>’`. A more permanent alternative is to create a file in the same directory as the docker-compose.yaml called `.env` by running `touch .env`, then go into the file using an editor by running `sudo nano .etc` and add your environment variables - e.g. `PIHOLE_PASSWORD=password`.
 
 Run the `docker-compose.yml` in `/docker-pihole` directory using command `docker-compose up -d`.
 
 ### Start Pihole and Unbound in a single container
 
-Sources: https://docs.pi-hole.net/guides/unbound/ and https://github.com/chriscrowe/docker-pihole-unbound
+Clone this git repository by running `git clone https://github.com/willypapa/raspberrypi.git`. It will clone the files into `/raspberry` directory, where you will find the docker-compose.yml file. We will now refer to the `pihole-unbound` service in the docker-compose.yml.
 
-The docker-compose.yaml sets pihole's password to whatever the environment variable  `$PIHOLE_PASSWORD` is. Set it on the pi by running: `export PIHOLE_PASSWORD=’<password>’`.
+Change directories to be in the `/raspberrypi` directory by running, for example, `cd raspberrypi`. 
 
-Run the `docker-compose.yml` in `/docker-unbound-pihole` directory using command `docker-compose up -d`.
+Create a `.env` file by running `sudo touch .env` in the same directory as the docker-compose.yml file. Populate it with the following environment variables which are referred to by the docker-componse.yml file:
+
+  PIHOLE_PASSWORD=password
+  PIHOLE_TIMEZONE=Europe/London
+  PIHOLE_ServerIP=<IP address of the host raspberry pi - e.g.192.168.0.2>
+
+In the same directory as the docker-compose.yml, run `docker-compose up -d`.
 
 ### Whitelist common false-positives
 
-Source: https://github.com/anudeepND/whitelist
+This is optional. The github repo we refer to here keeps a list of common false-positive domains for us to whitelist.
 
-The pihole docker image does not include python, which is how the whitelist gets installed. So we have to run the following on the host raspberry pi as it does have python v3 installed:
+The whitelist is installed using a python script. However, the pihole/pihole docker image does not include a python installation. So we have to run the following on the host raspberry pi itself which should have python3 installed.
 
-Run `git clone https://github.com/anudeepND/whitelist.git`, then `sudo python3 whitelist/scripts/whitelist.py --dir </home/docker/etc-pihole/> --docker`
+Run `git clone https://github.com/anudeepND/whitelist.git`, then `sudo python3 whitelist/scripts/whitelist.py --dir <path to /etc-pihole/ volume> --docker`
