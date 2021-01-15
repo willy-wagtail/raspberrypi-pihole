@@ -181,9 +181,9 @@ Change directories to be in the `/raspberrypi` directory by running, for example
 
 Create a `.env` file by running `sudo touch .env` in the same directory as the docker-compose.yml file. Populate it with the following environment variables which are referred to by the docker-componse.yml file:
 
-  PIHOLE_PASSWORD=password
-  PIHOLE_TIMEZONE=Europe/London
-  PIHOLE_ServerIP=<IP address of the host raspberry pi - e.g.192.168.0.2>
+>  PIHOLE_PASSWORD=password
+>  PIHOLE_TIMEZONE=Europe/London
+>  PIHOLE_ServerIP=<IP address of the host raspberry pi - e.g. 192.168.0.2>
 
 In the same directory as the docker-compose.yml, run `docker-compose up -d`.
 
