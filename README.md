@@ -110,15 +110,19 @@ https://blog.alexellis.io/getting-started-with-docker-on-raspberry-pi/
 
 https://sanderh.dev/setup-Docker-and-Docker-Compose-on-Raspberry-Pi/
 
+https://dev.to/rohansawant/installing-docker-and-docker-compose-on-the-raspberry-pi-in-5-simple-steps-3mgl
+
+https://www.zuidwijk.com/blog/installing-docker-and-docker-compose-on-a-raspberry-pi-4/
+
 ### Install Docker
 
-Run `curl -sSL https://get.docker.com | sh`, then run `sudo gpasswd -a pi docker`, replacing pi with whatever account is the main account.
+Run `curl -sSL https://get.docker.com | sh`, then run `sudo gpasswd -a pi docker`, replacing pi with whatever account is the main account. Logout using `logout` command and log back in.
+
+Test it by showing version and running the hello-world container: `docker version` and `docker run hello-world`. Afterwards, clean up by removing the container and the hello-world image: `docker rm <container id>` then `docker image rm hello-world`.
 
 ### Install Docker Compose
 
-https://dev.to/rohansawant/installing-docker-and-docker-compose-on-the-raspberry-pi-in-5-simple-steps-3mgl
-
-Run `sudo apt install libffi-dev libssl-dev python3-pip`, then run `sudo pip3 -v install docker-compose`
+Run `sudo apt install libffi-dev libssl-dev python3 python3-pip`, then `sudo apt remove python-configparser`, and finally run `sudo pip3 -v install docker-compose`. Reboot the pi.
 
 # Pihole with Docker Compose
 
