@@ -1,7 +1,7 @@
 # Setting Up Raspberry Pi
 
-
 ### Sources
+
 https://www.raspberrypi.org/documentation/installation/installing-images/README.md
 
 https://www.raspberrypi.org/documentation/remote-access/ssh/README.md
@@ -145,7 +145,7 @@ If you are not using the pi user, remember to add the account you wish to use to
 
 ### Install Docker Compose
 
-Run `sudo apt install libffi-dev libssl-dev python3 python3-pip`, then `sudo apt remove python-configparser`, and finally run `sudo pip3 -v install docker-compose`. Reboot the pi.
+Run `sudo apt install libffi-dev libssl-dev python3 python3-pip`, then `sudo apt remove python-configparser`, and finally run `sudo pip3 -v install docker-compose`. Reboot the pi by running `sudo reboot`.
 
 # Pihole with Docker Compose
 
