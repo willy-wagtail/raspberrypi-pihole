@@ -100,6 +100,27 @@ Use unattended-upgrades with raspberry pi specific config. Another option is to 
 
 See link to YouTube video above for more details.
 
+# Installing Git
+
+### Sources 
+
+https://projects.raspberrypi.org/en/projects/getting-started-with-git/3
+
+### Install git
+
+Run `sudo apt install git`, then check the installation by running `git --version`.
+
+### Configuring git
+
+Set up your username and email by running:
+`git config --global user.name "Harry Potter"`, then `git config --global user.email "h.potter@hogwarts.prof"`.
+
+Check the config by running `git config --list`.
+
+The configuration is stored in the `~/.gitconfig` file. Edit this directly, or via `git config` to make further changes if required.
+
+You can also tell git what text editor you'd like to use, for example this sets it to nano: `git config --global core.editor nano`.
+
 # Installing Docker
 
 ### Sources
