@@ -10,11 +10,11 @@ https://www.raspberrypi.org/documentation/configuration/wireless/headless.md
 
 ### Preparing SD Card
 
-Use Raspberry Pi Imager to flash RaspberryPi OS onto SD card. The Lite version does not include the desktop GUI, so use that if you are setting the raspberry pi up headless.
+On another device, download and use the "Raspberry Pi Imager" to flash RaspberryPi OS onto a micro-SD card. The Lite version does not include the desktop GUI, so use that if you are setting the raspberry pi up headless.
 
 To enable ssh, create empty file called `.ssh` at root level on your SD card before the first boot.
 
-To automatically connect to a wifi network, add a wpa_supplicant.conf file at root level before first boot with the following:
+I personally use ethernet, but if you want to use wifi, you can automatically connect to a wifi network on the first boot by adding a ``wpa_supplicant.conf`` file at root level before first boot with the following:
 
 ```
 ctrl_interface=DIR=/var/run/wpa_supplicant GROUP=netdev
@@ -29,7 +29,9 @@ network={
 
 ### First boot
 
-Ssh into the raspberry pi using the username "pi" and password "raspberry".
+Put the micro-SD card into the raspberrypi and power it on. 
+
+Wait a little for it to start up, then you can ssh into the raspberry pi using the default username "pi" and password "raspberry". Use your router or another network analyser tool (like Fing app) to find the IP address of the pi and run this command `ssh pi@<IP address>`.
 
 # Securing Raspberry Pi
 
