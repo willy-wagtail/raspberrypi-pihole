@@ -147,7 +147,9 @@ If you are not using the pi user, remember to add the account you wish to use to
 
 Run `sudo apt install libffi-dev libssl-dev python3 python3-pip`, then `sudo apt remove python-configparser`, and finally run `sudo pip3 -v install docker-compose`. Reboot the pi by running `sudo reboot`.
 
-### List of Common Docker Commands
+### Dump of Common Docker Commands
+
+// todo
 
 # Pihole with Docker Compose
 
@@ -181,7 +183,11 @@ In the directory where the `docker-compose.yml` is in, run `docker-compose up -d
 
 Clone this git repository by running `git clone https://github.com/willypapa/raspberrypi.git`. It will clone the files into `/raspberry` directory, where you will find the docker-compose.yml file. We will now refer to the `pihole-unbound` service in the docker-compose.yml. 
 
-> Note that this uses my own docker image on docker hub. To not rely on me, create your own by `cd /raspberry/pihole-unbound` directory where the Dockerfile is found. Log into docker `docker login` with your dockerhub username and password. You can then build and push your own image to your own dockerhub using `docker build -t <your_docker_hub_username>/pihole-unbound`, then `docker push <your_docker_hub_username>/pihole-unbound`. With your own image, change the `image` in the `docker-compose.yml` to `<your_docker_hub_username>/pihole-unbound:latest`.
+> Note that this uses my own docker image on docker hub. To not rely on me, create your own by `cd /raspberry/pihole-unbound` directory where the Dockerfile is found. 
+>
+> Log into docker using command `docker login` and supply your dockerhub username and password. Now build and push your own image to your own dockerhub using `docker build -t <your_docker_hub_username>/pihole-unbound`, then `docker push <your_docker_hub_username>/pihole-unbound`. 
+>
+> Now that your own image is created and pushed, change the `image` in the `docker-compose.yml` from my one to your own at `<your_docker_hub_username>/pihole-unbound:latest`.
 
 In the directory where the `docker-compose.yml` is (i.e. `/raspberrypi`), create a `.env` file by running `sudo touch .env`. Populate it with the following environment variables which are referred to by the docker-componse.yml file:
 
