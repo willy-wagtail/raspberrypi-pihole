@@ -147,6 +147,8 @@ If you are not using the pi user, remember to add the account you wish to use to
 
 Run `sudo apt install libffi-dev libssl-dev python3 python3-pip`, then `sudo apt remove python-configparser`, and finally run `sudo pip3 -v install docker-compose`. Reboot the pi by running `sudo reboot`.
 
+### List of Common Docker Commands
+
 # Pihole with Docker Compose
 
 ### Sources
@@ -167,21 +169,21 @@ https://github.com/anudeepND/whitelist
 
 (Go to the next section if you want to start Pihole with Unbound. This is for starting Pihole in docker.)
 
-Use the docker-compose.yaml in the above links. 
+Using the `docker-compose.yaml` file from https://hub.docker.com/r/pihole/pihole/ as reference, create the file by running `touch docker-compose.yml`, then `sudo nano docker-compose.yml` to open the file in an editor, and finally copy pasting the contents in. 
 
-Edit the file to uncomment the environment property `WEBPASSWORD` and point it to the host's environment variable - i.e. `WEBPASSWORD: $PIHOLE_PASSWORD`. If we don't give it a password, a random one will be generated.
+Edit the file to uncomment the environment property `WEBPASSWORD` and point it to an environment variable - i.e. `WEBPASSWORD: $PIHOLE_PASSWORD`. Note that if we don't give it a password, a random one will be generated which you can find in the pihole startup logs.
 
-The docker-compose.yml sets pihole's password to whatever the environment variable `$PIHOLE_PASSWORD` is. Set it on the pi by running: `export PIHOLE_PASSWORD=’<password>’`. A more permanent alternative is to create a file in the same directory as the docker-compose.yaml called `.env` by running `touch .env`, then go into the file using an editor by running `sudo nano .etc` and add your environment variables - e.g. `PIHOLE_PASSWORD=password`.
+Now pihole's web UI password will be set to whatever the environment variable `$PIHOLE_PASSWORD` is. You can set it on the pi by running: `export PIHOLE_PASSWORD=’<password>’`. A more permanent alternative is to create a file in the same directory as the docker-compose.yml file called `.env` by running `touch .env`, then go into the file using an editor by running `sudo nano .etc` and add your environment variables - e.g. `PIHOLE_PASSWORD=password`.
 
-Run the `docker-compose.yml` in `/docker-pihole` directory using command `docker-compose up -d`.
+In the directory where the `docker-compose.yml` is in, run `docker-compose up -d`. You can find new container's id by running `docker ps -a`. Using the container id, you can use it to tail the logs as it starts up using `docker logs -f <docker container id>`.
 
 ### Start Pihole and Unbound in a single container
 
-Clone this git repository by running `git clone https://github.com/willypapa/raspberrypi.git`. It will clone the files into `/raspberry` directory, where you will find the docker-compose.yml file. We will now refer to the `pihole-unbound` service in the docker-compose.yml.
+Clone this git repository by running `git clone https://github.com/willypapa/raspberrypi.git`. It will clone the files into `/raspberry` directory, where you will find the docker-compose.yml file. We will now refer to the `pihole-unbound` service in the docker-compose.yml. 
 
-Change directories to be in the `/raspberrypi` directory by running, for example, `cd raspberrypi`. 
+> Note that this uses my own docker image on docker hub. To not rely on me, create your own by `cd /raspberry/pihole-unbound` directory where the Dockerfile is found. Log into docker `docker login` with your dockerhub username and password. You can then build and push your own image to your own dockerhub using `docker build -t <your_docker_hub_username>/pihole-unbound`, then `docker push <your_docker_hub_username>/pihole-unbound`. With your own image, change the `image` in the `docker-compose.yml` to `<your_docker_hub_username>/pihole-unbound:latest`.
 
-Create a `.env` file by running `sudo touch .env` in the same directory as the docker-compose.yml file. Populate it with the following environment variables which are referred to by the docker-componse.yml file:
+In the directory where the `docker-compose.yml` is (i.e. `/raspberrypi`), create a `.env` file by running `sudo touch .env`. Populate it with the following environment variables which are referred to by the docker-componse.yml file:
 
 ```
 PIHOLE_PASSWORD=password
@@ -189,7 +191,7 @@ PIHOLE_TIMEZONE=Europe/London
 PIHOLE_ServerIP=<IP address of the host raspberry pi - e.g. 192.168.0.2>
 ```
 
-In the same directory as the docker-compose.yml, run `docker-compose up -d`.
+Again, in the same directory as the docker-compose.yml, run `docker-compose up -d`. You can find new container's id by running `docker ps -a`. Using the container id, you can use it to tail the logs as it starts up using `docker logs -f <docker container id>`.
 
 ### Whitelist common false-positives
 
