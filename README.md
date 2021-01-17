@@ -185,7 +185,7 @@ In the directory where the `docker-compose.yml` is in, run `docker-compose up -d
 
 Clone this git repository by running `git clone https://github.com/willypapa/raspberrypi.git`. It will clone the files into `/raspberry` directory, where you will find the docker-compose.yml file. We will now refer to the `pihole-unbound` service in the docker-compose.yml. 
 
-> Note that this uses my own docker image on docker hub. To not rely on me, create your own by `cd /raspberry/pihole-unbound` directory where the Dockerfile is found. 
+> Note that this uses my own docker image on docker hub. To not rely on me, create your own by navigating to `/raspberrypi/docker-pihole-unbound` directory where the Dockerfile is found which builds the pihole and unbound image.
 >
 > Log into docker using command `docker login` and supply your dockerhub username and password. Now build and push your own image to your own dockerhub using `docker build -t <your_docker_hub_username>/pihole-unbound`, then `docker push <your_docker_hub_username>/pihole-unbound`. 
 >
