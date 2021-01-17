@@ -139,9 +139,11 @@ https://www.zuidwijk.com/blog/installing-docker-and-docker-compose-on-a-raspberr
 
 ### Install Docker
 
-Run `curl -sSL https://get.docker.com | sh`, then run `sudo gpasswd -a pi docker`, replacing pi with whatever account is the main account. Logout using `logout` command and log back in.
+Run `curl -sSL https://get.docker.com | sh`, then run `sudo gpasswd -a pi docker`, replacing pi with whatever account you use to log onto the raspberry pi. Logout using `logout` command and log back in.
 
-Test it by showing version and running the hello-world container: `docker version` and `docker run hello-world`. Afterwards, clean up by removing the container and the hello-world image: `docker rm <container id>` then `docker image rm hello-world`.
+Test it by showing version and running the hello-world container: `docker version` and `docker run hello-world`. 
+
+Afterwards, clean up by removing the container and the hello-world image. First, get the container id by running `docker ps -a`. Then force remove the container by running `docker rm -f <container id>`. Then remove the downloaded image by running `docker image rm hello-world`.
 
 If you are not using the pi user, remember to add the account you wish to use to the docker usergroup. Check username is in the right groups using this command `grep '<username>' /etc/group`.
 
