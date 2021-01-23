@@ -40,6 +40,12 @@ You can optionally change the hostname of your device as follows. Run ``sudo ras
 
 Alternatively, run ``sudo nano /etc/hosts``, change the old raspberry pi hostname to your new one, save and exit by hitting Ctrl-X and the "Y" for yes. Then run ``sudo nano /etc/hostname``, change the hostname there to the new one, save and exit. Finally reboot by running ``sudo reboot``.
 
+### Correctly shutting down the Raspberry Pi
+
+When you want to shut down the rasp pi, pulling power cord without properly shutting down the system increases the risk of corrupting the micro SD card. Anything running will also not save and exit gracefully. To properly shutdown, run ``sudo shutdown -h now``. Give it a second, then you can pull the power to the device. To start the Raspberry pi back up, simply turn on the power.
+
+There are ways to create a power button using the GPIO buttons. // To explore.
+
 # Securing Raspberry Pi
 
 ### Sources
