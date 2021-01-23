@@ -1,11 +1,15 @@
+1. [ Setting Up Raspberry Pi ](#setuppi)
+2. [ Securing Raspberry Pi ](#securingpi)
+3. [ Installing Git ](#installinggit)
+4. [ Installing Docker ](#installingdocker)
+
+<a name="setuppi"></a>
 # Setting Up Raspberry Pi
 
 ### Sources
 
 https://www.raspberrypi.org/documentation/installation/installing-images/README.md
-
 https://www.raspberrypi.org/documentation/remote-access/ssh/README.md
-
 https://www.raspberrypi.org/documentation/configuration/wireless/headless.md
 
 ### Preparing SD Card
@@ -50,14 +54,13 @@ To start the Raspberry pi back up, simply turn on the power.
 
 There are ways to create a power button using the GPIO pins on the board. // TODO: explore this
 
+<a name="securingpi"></a>
 # Securing Raspberry Pi
 
 ### Sources
 
 https://www.raspberrypi.org/documentation/raspbian/updating.md
-
 https://www.raspberrypi.org/documentation/configuration/security.md
-
 https://www.youtube.com/watch?v=ukHcTCdOKrc
 
 ### Change password for pi user
@@ -85,15 +88,13 @@ Run `sudo apt update`, then `sudo apt full-upgrade -y`, and finally `sudo apt cl
 
 ### Kill unnecessary system services
 
-List running services and disable services you don't need - e.g. wifi or bluetooth.
+To reduce idling power usage, and also reduce the area for compromise, we can list all running services and disable services you don't need - e.g. wifi, bluetooth or sound card drivers.
 
 To see all active services, run `sudo systemctl --type=service --state=active`.
 
-To disable the wifi service now, run `sudo systemctl disable --now wpa_supplicant.service`.
+To disable the wifi service or the bluetooth service now, run `sudo systemctl disable --now wpa_supplicant.service` or `sudo systemctl disable --now bluetooth.service` respectively.
 
-To disable the bluetooth service now, run`sudo systemctl disable --now bluetooth.service`
-
-If you wanted to enable a service again by running `sudo systemctl enable --now bluetooth.service`.
+If you wanted to enable a service again, run `sudo systemctl enable --now bluetooth.service`.
 
 ### Restrict ssh accounts
 
@@ -119,6 +120,7 @@ Use unattended-upgrades with raspberry pi specific config. Another option is to 
 
 See link to YouTube video above for more details.
 
+<a name="installinggit"></a>
 # Installing Git
 
 ### Sources 
@@ -140,6 +142,7 @@ The configuration is stored in the `~/.gitconfig` file. Edit this directly, or v
 
 You can also tell git what text editor you'd like to use, for example this sets it to nano: `git config --global core.editor nano`.
 
+<a name="installingdocker"></a>
 # Installing Docker
 
 ### Sources
