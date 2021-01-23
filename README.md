@@ -38,6 +38,8 @@ Wait a little for it to start up, then you can ssh into the raspberry pi using t
 
 You can optionally change the hostname of your device as follows. Run ``sudo raspi-config`` then go to "System Options", then "Hostname". You can then type in your new hostname and reboot.
 
+Alternatively, run ``sudo nano /etc/hosts``, change the old raspberry pi hostname to your new one, save and exit by hitting Ctrl-X and the "Y" for yes. Then run ``sudo nano /etc/hostname``, change the hostname there to the new one, save and exit. Finally reboot by running ``sudo reboot``.
+
 # Securing Raspberry Pi
 
 ### Sources
@@ -49,7 +51,7 @@ https://www.raspberrypi.org/documentation/configuration/security.md
 https://www.youtube.com/watch?v=ukHcTCdOKrc
 
 ### Change password for pi user
-Run `sudo raspi-config`, go to “System Options”, and then “Password”
+Run `sudo raspi-config`, go to “System Options”, and then “Password”.
 
 ### Set up ssh
 
