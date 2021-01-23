@@ -153,7 +153,7 @@ You can also tell git what text editor you'd like to use, for example this sets 
 https://www.raspberrypi.org/blog/docker-comes-to-raspberry-pi/  
 https://blog.alexellis.io/getting-started-with-docker-on-raspberry-pi/  
 https://sanderh.dev/setup-Docker-and-Docker-Compose-on-Raspberry-Pi/  
-https://dev.to/rohansawant/  installing-docker-and-docker-compose-on-the-raspberry-pi-in-5-simple-steps-3mgl  
+https://dev.to/rohansawant/installing-docker-and-docker-compose-on-the-raspberry-pi-in-5-simple-steps-3mgl  
 https://www.zuidwijk.com/blog/installing-docker-and-docker-compose-on-a-raspberry-pi-4/  
 
 ### Install Docker
@@ -172,15 +172,15 @@ Run `sudo apt install libffi-dev libssl-dev python3 python3-pip`, then `sudo apt
 
 ### Dump of Common Docker Commands
 
-``docker ps -a``
-``docker stop <container-id>``
-``docker image ls``
-``docker image rm <image-id>``
-``docker rm -f <container-id>``
-``docker exec -it <container-id> bash``
+``docker ps -a``  
+``docker stop <container-id>``  
+``docker image ls``  
+``docker image rm <image-id>``  
+``docker rm -f <container-id>``  
+``docker exec -it <container-id> bash``  
 
-``docker-compose pull``
-``docker-compose down``
+``docker-compose pull``  
+``docker-compose down``  
 ``docker-compose up -d``
 
 <a name="piholeandunboundwithdockercompose"></a>
