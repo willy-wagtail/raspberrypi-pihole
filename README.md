@@ -42,9 +42,13 @@ Alternatively, run ``sudo nano /etc/hosts``, change the old raspberry pi hostnam
 
 ### Correctly shutting down the Raspberry Pi
 
-When you want to shut down the rasp pi, pulling power cord without properly shutting down the system increases the risk of corrupting the micro SD card. Anything running will also not save and exit gracefully. To properly shutdown, run ``sudo shutdown -h now``. Give it a second, then you can pull the power to the device. To start the Raspberry pi back up, simply turn on the power.
+To restart the pi, run ``sudo reboot``.
 
-There are ways to create a power button using the GPIO buttons. // To explore.
+When you want to shut down the pi, pulling power cord without properly shutting down the system increases the risk of corrupting the micro SD card. Anything running will also not save and exit gracefully. To properly shutdown, run ``sudo shutdown -h now``. Give it a second to send SIGTERM, SIGKILL signals to all running processes, and unmount all file systems. Only when the system is halted can you pull the power to the device with minimised risk. 
+
+To start the Raspberry pi back up, simply turn on the power.
+
+There are ways to create a power button using the GPIO pins on the board. // TODO: explore this
 
 # Securing Raspberry Pi
 
