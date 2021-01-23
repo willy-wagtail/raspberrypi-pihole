@@ -11,9 +11,9 @@
 
 ### Sources
 
-https://www.raspberrypi.org/documentation/installation/installing-images/README.md
-https://www.raspberrypi.org/documentation/remote-access/ssh/README.md
-https://www.raspberrypi.org/documentation/configuration/wireless/headless.md
+https://www.raspberrypi.org/documentation/installation/installing-images/README.md  
+https://www.raspberrypi.org/documentation/remote-access/ssh/README.md  
+https://www.raspberrypi.org/documentation/configuration/wireless/headless.md  
 
 ### Preparing SD Card
 
@@ -62,9 +62,9 @@ There are ways to create a power button using the GPIO pins on the board. // TOD
 
 ### Sources
 
-https://www.raspberrypi.org/documentation/raspbian/updating.md
-https://www.raspberrypi.org/documentation/configuration/security.md
-https://www.youtube.com/watch?v=ukHcTCdOKrc
+https://www.raspberrypi.org/documentation/raspbian/updating.md  
+https://www.raspberrypi.org/documentation/configuration/security.md  
+https://www.youtube.com/watch?v=ukHcTCdOKrc  
 
 ### Change password for pi user
 Run `sudo raspi-config`, go to “System Options”, and then “Password”.
@@ -150,11 +150,11 @@ You can also tell git what text editor you'd like to use, for example this sets 
 
 ### Sources
 
-https://www.raspberrypi.org/blog/docker-comes-to-raspberry-pi/
-https://blog.alexellis.io/getting-started-with-docker-on-raspberry-pi/
-https://sanderh.dev/setup-Docker-and-Docker-Compose-on-Raspberry-Pi/
-https://dev.to/rohansawant/installing-docker-and-docker-compose-on-the-raspberry-pi-in-5-simple-steps-3mgl
-https://www.zuidwijk.com/blog/installing-docker-and-docker-compose-on-a-raspberry-pi-4/
+https://www.raspberrypi.org/blog/docker-comes-to-raspberry-pi/  
+https://blog.alexellis.io/getting-started-with-docker-on-raspberry-pi/  
+https://sanderh.dev/setup-Docker-and-Docker-Compose-on-Raspberry-Pi/  
+https://dev.to/rohansawant/  installing-docker-and-docker-compose-on-the-raspberry-pi-in-5-simple-steps-3mgl  
+https://www.zuidwijk.com/blog/installing-docker-and-docker-compose-on-a-raspberry-pi-4/  
 
 ### Install Docker
 
@@ -188,12 +188,12 @@ Run `sudo apt install libffi-dev libssl-dev python3 python3-pip`, then `sudo apt
 
 ### Sources
 
-https://docs.pi-hole.net/
-https://hub.docker.com/r/pihole/pihole/ 
-https://github.com/pi-hole/docker-pi-hole
-https://docs.pi-hole.net/guides/unbound/ 
-https://github.com/chriscrowe/docker-pihole-unbound
-https://github.com/anudeepND/whitelist
+https://docs.pi-hole.net/   
+https://hub.docker.com/r/pihole/pihole/  
+https://github.com/pi-hole/docker-pi-hole  
+https://docs.pi-hole.net/guides/unbound/  
+https://github.com/chriscrowe/docker-pihole-unbound  
+https://github.com/anudeepND/whitelist  
 
 ### Start Pihole in container
 
@@ -239,6 +239,6 @@ The whitelist is installed using a python script. However, the pihole/pihole doc
 
 Run `git clone https://github.com/anudeepND/whitelist.git`, then `sudo python3 whitelist/scripts/whitelist.py --dir <path to /etc-pihole/ volume> --docker`
 
-### Change Network Router's DNS Server
+### Change Your Router's DNS Server
 
 Log onto your home network's router (usually device 1 on your subnet - e.g. 192.168.0.1), and change the default server to point to the IP address of the raspberry pi running pihole. Instructions on how to do this will vary depending on your router.
