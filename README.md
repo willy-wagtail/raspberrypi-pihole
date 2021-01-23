@@ -117,9 +117,10 @@ Use fail2ban which watchs system logs for repeated login attempts and add a fire
 
 ### Automatic package update and upgrade
 
-Not for production because of potential compatibility problems that may arise.
+Not for production because of potential compatibility problems that may arise. 
 
-Use unattended-upgrades with raspberry pi specific config. Another option is to set up a cron job to run the update/upgrade commands. 
+Use unattended-upgrades with raspberry pi specific config. 
+Alternatively, set up a cron job to run the update/upgrade commands. 
 
 See link to YouTube video above for more details.
 
@@ -132,7 +133,7 @@ https://projects.raspberrypi.org/en/projects/getting-started-with-git/3
 
 ### Install git
 
-Run `sudo apt install git`, then check the installation by running `git --version`.
+Run `sudo apt install -y git`, then check the installation by running `git --version`.
 
 ### Configuring git
 
@@ -158,17 +159,19 @@ https://www.zuidwijk.com/blog/installing-docker-and-docker-compose-on-a-raspberr
 
 ### Install Docker
 
-Run `curl -sSL https://get.docker.com | sh`, then run `sudo gpasswd -a pi docker`, replacing pi with whatever account you use to log onto the raspberry pi. Logout using `logout` command and log back in.
+Run `curl -sSL https://get.docker.com | sh`.
 
-Test it by showing version and running the hello-world container: `docker version` and `docker run hello-world`. 
+Then add your user to the docker usergroup by running `sudo gpasswd -a pi docker` - replacing pi with whatever account you use docker on your raspberry pi. Logout using `logout` command and log back in to make sure the group setting is applied. (You can check that your username is in the right groups using this command `grep '<username>' /etc/group`.)
 
-Afterwards, clean up by removing the container and the hello-world image. First, get the container id by running `docker ps -a`. Then force remove the container by running `docker rm -f <container id>`. Then remove the downloaded image by running `docker image rm hello-world`.
+Now test docker is installed with `docker version`.
 
-If you are not using the pi user, remember to add the account you wish to use to the docker usergroup. Check username is in the right groups using this command `grep '<username>' /etc/group`.
+You can also check that your user can run a docker container by running the hello-world container, `docker run hello-world`. Afterwards, clean up by removing the container and the hello-world image by firstly getting the container id by running `docker ps -a`. Then force remove the container by running `docker rm -f <container id>` which will stop and remove it. Finally, remove the downloaded image by running `docker image rm hello-world`.
 
 ### Install Docker Compose
 
-Run `sudo apt install libffi-dev libssl-dev python3 python3-pip`, then `sudo apt remove python-configparser`, and finally run `sudo pip3 -v install docker-compose`. Reboot the pi by running `sudo reboot`.
+Run `sudo apt install -y libffi-dev libssl-dev python3 python3-pip`, then `sudo apt remove python-configparser`, and finally run `sudo pip3 -v install docker-compose`. 
+
+Reboot the pi by running `sudo reboot`.
 
 ### Dump of Common Docker Commands
 
@@ -199,7 +202,7 @@ https://github.com/anudeepND/whitelist
 
 ### Start Pihole in container
 
-(Go to the next section if you want to start Pihole with Unbound. This is for starting Pihole in docker.)
+> *Go to the next section if you want to start Pihole with Unbound. This is for starting Pihole only in a docker container.*
 
 Using the `docker-compose.yaml` file from https://hub.docker.com/r/pihole/pihole/ as reference, create the file by running `touch docker-compose.yml`, then `sudo nano docker-compose.yml` to open the file in an editor, and finally copy pasting the contents in. 
 
@@ -211,15 +214,19 @@ In the directory where the `docker-compose.yml` is in, run `docker-compose up -d
 
 ### Start Pihole and Unbound in a single container
 
-Clone this git repository by running `git clone https://github.com/willypapa/raspberrypi.git`. It will clone the files into `/raspberry` directory, where you will find the docker-compose.yml file. We will now refer to the `pihole-unbound` service in the docker-compose.yml. 
+Clone this git repository by running `git clone https://github.com/willypapa/raspberrypi.git`. It will clone the files into `/raspberrypi` directory, where you will find the docker-compose.yml file. We will now refer to the `pihole-unbound` service in the docker-compose.yml. 
 
-> Note that this uses my own docker image on docker hub. To not rely on me, create your own by navigating to `/raspberrypi/docker-pihole-unbound` directory where the Dockerfile is found which builds the pihole and unbound image.
+> Note that this uses my own docker image on docker hub. You should create your own and not rely on me.
 >
-> Log into docker using command `docker login` and supply your dockerhub username and password. Now build and push your own image to your own dockerhub using `docker build -t <your_docker_hub_username>/pihole-unbound`, then `docker push <your_docker_hub_username>/pihole-unbound`. 
+> Go to `/raspberrypi/docker-pihole-unbound` directory where the Dockerfile is found which builds the pihole and unbound image.
 >
-> Now that your own image is created and pushed, change the `image` in the `docker-compose.yml` from my one to your own at `<your_docker_hub_username>/pihole-unbound:latest`.
+> Log into docker using command `docker login` and supply your dockerhub username and password. 
+>
+> Now build and push your own image to your own DockerHub using `docker build -t <your_docker_username>/pihole-unbound`, then `docker push <your_docker_username>/pihole-unbound`. 
+>
+> Change the `image` property in the `docker-compose.yml` file from to your own, `image: <your_docker_username>/pihole-unbound:latest`.
 
-In the directory where the `docker-compose.yml` is (i.e. `/raspberrypi`), create a `.env` file by running `sudo touch .env`. Populate it with the following environment variables which are referred to by the docker-componse.yml file:
+In the directory where the `docker-compose.yml` is (i.e. `/raspberrypi`), create a `.env` file by running `sudo touch .env`, then populate it with the following environment variables. These are referred to within the docker-componse.yml file.
 
 ```
 PIHOLE_PASSWORD=password
