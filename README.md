@@ -172,7 +172,16 @@ Run `sudo apt install libffi-dev libssl-dev python3 python3-pip`, then `sudo apt
 
 ### Dump of Common Docker Commands
 
-// todo
+``docker ps -a``
+``docker stop <container-id>``
+``docker image ls``
+``docker image rm <image-id>``
+``docker rm -f <container-id>``
+``docker exec -it <container-id> bash``
+
+``docker-compose pull``
+``docker-compose down``
+``docker-compose up -d``
 
 <a name="piholeandunboundwithdockercompose"></a>
 # Pihole and Unbound with Docker Compose
@@ -180,15 +189,10 @@ Run `sudo apt install libffi-dev libssl-dev python3 python3-pip`, then `sudo apt
 ### Sources
 
 https://docs.pi-hole.net/
-
 https://hub.docker.com/r/pihole/pihole/ 
-
 https://github.com/pi-hole/docker-pi-hole
-
 https://docs.pi-hole.net/guides/unbound/ 
-
 https://github.com/chriscrowe/docker-pihole-unbound
-
 https://github.com/anudeepND/whitelist
 
 ### Start Pihole in container
@@ -223,6 +227,10 @@ PIHOLE_ServerIP=<IP address of the host raspberry pi - e.g. 192.168.0.2>
 
 Again, in the same directory as the docker-compose.yml, run `docker-compose up -d`. You can find new container's id by running `docker ps -a`. Using the container id, you can use it to tail the logs as it starts up using `docker logs -f <docker container id>`.
 
+To test unbound is working, access the bash terminal in the docker container by running ``docker exec -it <container-id-of-pihole-unbound> bash``. Once in, run these two commands to test DNSSEC validation: ``dig sigfail.verteiltesysteme.net @127.0.0.1 -p 5335`` and ``dig sigok.verteiltesysteme.net @127.0.0.1 -p 5335``. The first should give a status report of ``SERVFAIL`` and no IP address. The second should give ``NOERROR`` plus an IP address. See pihole's unbound docs for more info.
+
+To confirm Pihole is up and pointing to unbound dns server, go to the local IP address of the host raspberry pi, e.g 192.168.0.2. You should see the Pihole dashboard at /admin. Login using the password set in the environment variable ``$PIHOLE_PASSWORD``. Go to "Settings", and under the "DNS" tab, check that it is pointing to ``127.0.0.1#5335`` - which is the port we configured the unbound DNS server to listen to (see /docker-pihole-unbound/unbound-pihole.conf file).
+
 ### Whitelist common false-positives
 
 This is optional. The github repo we refer to here keeps a list of common false-positive domains for us to whitelist.
@@ -230,3 +238,7 @@ This is optional. The github repo we refer to here keeps a list of common false-
 The whitelist is installed using a python script. However, the pihole/pihole docker image does not include a python installation. So we have to run the following on the host raspberry pi itself which should have python3 installed.
 
 Run `git clone https://github.com/anudeepND/whitelist.git`, then `sudo python3 whitelist/scripts/whitelist.py --dir <path to /etc-pihole/ volume> --docker`
+
+### Change Network Router's DNS Server
+
+Log onto your home network's router (usually device 1 on your subnet - e.g. 192.168.0.1), and change the default server to point to the IP address of the raspberry pi running pihole. Instructions on how to do this will vary depending on your router.
