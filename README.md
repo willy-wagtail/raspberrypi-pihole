@@ -3,8 +3,9 @@
 1. [ Setting Up Raspberry Pi ](#setuppi)
 2. [ Securing Raspberry Pi ](#securingpi)
 3. [ Installing Git ](#installinggit)
-4. [ Installing Docker ](#installingdocker)
+4. [ Installing Docker and Docker Compose ](#installingdocker)
 5. [ Pihole and Unbound with Docker Compose ](#piholeandunboundwithdockercompose)
+6. [ Flashing Smart Device using Tuya-Convert and Docker ](#tuyaconvertdocker)
 
 <a name="setuppi"></a>
 # Setting Up Raspberry Pi
@@ -91,7 +92,7 @@ Run `sudo apt update`, then `sudo apt full-upgrade -y`, and finally `sudo apt cl
 
 ### Kill unnecessary system services
 
-To reduce idling power usage, and also reduce the area for compromise, we can list all running services and disable services you don't need - e.g. wifi, bluetooth or sound card drivers.
+To reduce idling power usage, and also reduce the areas for compromise, we can list all running services and disable services you don't need - e.g. wifi, bluetooth or sound card drivers.
 
 To see all active services, run `sudo systemctl --type=service --state=active`.
 
@@ -147,7 +148,7 @@ The configuration is stored in the `~/.gitconfig` file. Edit this directly, or v
 You can also tell git what text editor you'd like to use, for example this sets it to nano: `git config --global core.editor nano`.
 
 <a name="installingdocker"></a>
-# Installing Docker
+# Installing Docker and Docker Compose
 
 ### Sources
 
@@ -251,3 +252,31 @@ Run `git clone https://github.com/anudeepND/whitelist.git`, then `sudo python3 w
 ### Change Your Router's DNS Server
 
 Log onto your home network's router (usually device 1 on your subnet - e.g. 192.168.0.1), and change the default server to point to the IP address of the raspberry pi running pihole. Instructions on how to do this will vary depending on your router.
+
+### Set up VPN Server
+
+Set up a OpenVPN or WireGuard VPN server so that your devices away from home can browse the internet through your locally hosted Pihole. See https://docs.pi-hole.net/guides/vpn/openvpn/overview/.
+
+My router supports OpenVPN so I managed to set one up using that. Otherwise you could consider using PiVPN to setup a Wireguard or OpenVPN server on your raspberry pi. See https://www.pivpn.io/.
+
+<a name="tuyaconvertdocker"></a>
+# Flashing Tasmota with Tuya-Convert and Docker
+
+### Sources
+
+https://github.com/ct-Open-Source/tuya-convert  
+https://www.youtube.com/watch?v=dt5-iZc4_qU  
+https://templates.blakadder.com/index.html  
+https://tasmota.github.io/docs/About/
+
+### Device Compatibility
+
+This documents what I did to successfully flash the [Gosund (UP111) UK smart plugs](https://www.amazon.co.uk/gp/product/B0856T6TJC/) over-the-air (OTA) with Tasmota firmware.
+
+These smart plugs were bought from Amazon on January 2021. Devices purchased later may have had their firmware updated which prevents this method from working, so do your own research online to check your device's compatibility.
+
+### Installing Tuya-Convert using Docker
+
+
+
+
