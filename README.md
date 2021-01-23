@@ -33,6 +33,11 @@ Put the micro-SD card into the raspberrypi and power it on.
 
 Wait a little for it to start up, then you can ssh into the raspberry pi using the default username "pi" and password "raspberry". Use your router or another network analyser tool (like Fing app) to find the IP address of the pi and run this command `ssh pi@<IP address>`.
 
+
+### Change hostname
+
+You can optionally change the hostname of your device as follows. Run ``sudo raspi-config`` then go to "System Options", then "Hostname". You can then type in your new hostname and reboot.
+
 # Securing Raspberry Pi
 
 ### Sources
