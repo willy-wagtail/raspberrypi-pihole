@@ -178,6 +178,8 @@ Run `sudo apt install libffi-dev libssl-dev python3 python3-pip`, then `sudo apt
 ``docker image rm <image-id>``  
 ``docker rm -f <container-id>``  
 ``docker exec -it <container-id> bash``  
+``docker build -t <docker-username>/<image-name>``  
+``docker push <docker-username>/<image-name>``
 
 ``docker-compose pull``  
 ``docker-compose down``  
