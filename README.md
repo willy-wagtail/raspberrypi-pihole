@@ -291,17 +291,17 @@ Perform a ``sudo apt update`` and install git, ``sudo apt install git -y``.
 
  ### Flashing the IoT device
 
-Start the flashing process by running ``./start_flash.sh``. Following the instructions, type "yes" and enter. It'll ask you if it can terminate dnsmasq process to free up port 53, type "y". It'll ask you to terminate mosquitto to free up port 1883, type "y". The script should have turned the raspberry pi into a WiFi access point with SSID "vtrust-flash".
+Start the flashing process by running ``./start_flash.sh``. You'll be presented with a warning: when you are happy to proceed, type "yes" and enter. It'll ask you if it can terminate dnsmasq process to free up port 53, type "y". It'll ask you to terminate mosquitto to free up port 1883, type "y". The script should have turned the raspberry pi into a WiFi access point with SSID "vtrust-flash".
 
-Connect a smartphone (or any device) to "vtrust-flash" WiFi access point.
+Connect a smartphone (or any other device) to the "vtrust-flash" WiFi access point.
 
 Plug your IoT device in and put it in autoconfig/smartconfig/pairing mode - you should know it's in the right mode when the LED starts blinking. This is usually done by pressing and holding the primary button of the device. In my case, I pressed the power button of the plug for 5 seconds.
 
-Press enter to start flashing.
+Once the device is in pairing mode, press enter to start flashing.
 
-It'll then prompt you to ask which image you'd like to load onto the device. I flashed tasmota.bin using option "2", then confirm with "y". And thats it! 
+After some setup, it'll then prompt you to ask which image you'd like to load onto the device. For Tasmota, select the tasmota.bin option by typing "2", then confirm with "y". After it's done, we have Tasmota on our device! Now we can need to configuring it. 
 
->**Remember to keep your device plugged in for the next step.**
+> **Remember to keep your device plugged in for the next step.**
 
 ### Configure WiFi on Tasmota
 
