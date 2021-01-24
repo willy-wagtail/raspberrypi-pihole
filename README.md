@@ -5,7 +5,8 @@
 3. [ Installing Git ](#installinggit)
 4. [ Installing Docker and Docker Compose ](#installingdocker)
 5. [ Pihole and Unbound with Docker Compose ](#piholeandunboundwithdockercompose)
-6. [ Flashing IoT Devices with Tasmota using Tuya-Convert](#tuyaconvert)
+6. [ Log2Ram ](#log2ram)
+7. [ Flashing IoT Devices with Tasmota using Tuya-Convert](#tuyaconvert)
 
 <a name="setuppi"></a>
 # Setting Up Raspberry Pi
@@ -258,6 +259,38 @@ Log onto your home network's router (usually device 1 on your subnet - e.g. 192.
 Set up a OpenVPN or WireGuard VPN server so that your devices away from home can browse the internet through your locally hosted Pihole. See https://docs.pi-hole.net/guides/vpn/openvpn/overview/.
 
 My router supports OpenVPN so I managed to set one up using that. Otherwise you could consider using PiVPN to setup a Wireguard or OpenVPN server on your raspberry pi. See https://www.pivpn.io/.
+
+
+<a name="log2ram"></a>
+# Log2Ram
+
+### Sources
+
+https://github.com/azlux/log2ram  
+https://levelup.gitconnected.com/extend-the-lifespan-of-your-raspberry-pis-sd-card-with-log2ram-5929bf3316f2  
+https://www.geekbitzone.com/posts/log2ram/log2ram-raspberry-pi/  
+
+### Purpose
+
+Log2ram is software that redirects logs to memory instead of the micro-SD card, only writing to the micro-SD card at set intervals or during system shutdown. By default, the interval is once a day. This supposedly extends the lifespan of micro-SD cards by reducing the number of writes to disk. 
+
+(Another solution could be writing logs to a external NAS.)
+
+### Installing Log2Ram
+
+Add Log2Ram repository to our apt sources list, ``echo "deb http://packages.azlux.fr/debian/ buster main" | sudo tee /etc/apt/sources.list.d/azlux.list``.
+
+Download the public key to allow us to install Log2Ram, ``wget -qO - https://azlux.fr/repo.gpg.key | sudo apt-key add -``.
+
+Update your apt packages, ``sudo apt update``, then install log2ram, ``sudo apt install log2ram``.
+
+Reboot once installed, ``sudo reboot``.
+
+### Verify that it works
+
+After reboot, check that log2ram is mounted on ``/var/log`` by runninng ``df -h``.
+
+Also verify that log2ram is mounted to ``/var/log`` by running ``mount``.
 
 <a name="tuyaconvert"></a>
 # Flashing IoT Devices with Tasmota Using Tuya-Convert
