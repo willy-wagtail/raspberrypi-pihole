@@ -5,7 +5,7 @@
 3. [ Installing Git ](#installinggit)
 4. [ Installing Docker and Docker Compose ](#installingdocker)
 5. [ Pihole and Unbound with Docker Compose ](#piholeandunboundwithdockercompose)
-6. [ Flashing Smart Devices using Tuya-Convert](#tuyaconvert)
+6. [ Flashing IoT Devices using Tuya-Convert](#tuyaconvert)
 
 <a name="setuppi"></a>
 # Setting Up Raspberry Pi
@@ -266,8 +266,11 @@ My router supports OpenVPN so I managed to set one up using that. Otherwise you 
 
 https://github.com/ct-Open-Source/tuya-convert  
 https://www.youtube.com/watch?v=dt5-iZc4_qU  
-https://templates.blakadder.com/index.html  
 https://tasmota.github.io/docs/About/
+
+https://templates.blakadder.com/index.html  
+https://templates.blakadder.com/howto.html  
+https://templates.blakadder.com/gosund_UP111.html  
 
 ### Device Compatibility
 
@@ -283,7 +286,7 @@ Perform a ``sudo apt update`` and install git, ``sudo apt install git -y``.
 
  Clone the Tuya-Convert git repo, ``git clone https://github.com/ct-Open-Source/tuya-convert``, then ``cd tuya-convert``, and run ``./install_prereq.sh``.
 
- ### Flashing the device
+ ### Flashing the IoT device
 
 Start the flashing process by running ``./start_flash.sh``. Following the instructions, type "yes" and enter. It'll ask you if it can terminate dnsmasq process to free up port 53, type "y". It'll ask you to terminate mosquitto to free up port 1883, type "y". The script should have turned the raspberry pi into a WiFi access point with SSID "vtrust-flash".
 
@@ -297,10 +300,20 @@ It'll then prompt you to ask which image you'd like to load onto the device. I f
 
 >**Remember to keep your device plugged in for the next step.**
 
-### Configure Tasmota
+### Configure WiFi on Tasmota
 
 The device should now broadcast a Wifi access point with SSIP ``tasmota-xxxx``. Connect to it with your phone or another device to configure Tasmota.
 
 One connected to the Tasmota Wifi, you can configure your home WiFi credentials. Make sure to double check the credentials before pressing "Save".
 
-After pressing "Save", the device should restart and automatically connect to your home network.
+After pressing "Save", the device should restart and automatically connect to your home network. This step actually took a bit of time for me as the device kept starting up in Access Point mode. I had to power on and off the device a few times for it to connect to the home network.
+
+### GPIO Configuration on Tasmota 
+
+> See this link for screenshots of the below steps: https://templates.blakadder.com/howto.html
+
+Find the IP address of the IoT device on your home network via your router or a network analyser app like Fing. On a browser, go to the IP address, go to "Configuration", then "Configure Other". 
+
+Search for your specific device's GPIO configuration on [Tasmota templates](https://templates.blakadder.com/index.html). My smart plug's configuration template is found mine [here](https://templates.blakadder.com/gosund_UP111.html). 
+
+Paste in the device's GPIO configuration template string in "Templates" input field, check "Activate", then press "Save". The device should now reboot with a name reflecting the template. It should have ``Module 0`` selected which is the new template.
