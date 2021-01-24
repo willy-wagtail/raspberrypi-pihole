@@ -5,7 +5,7 @@
 3. [ Installing Git ](#installinggit)
 4. [ Installing Docker and Docker Compose ](#installingdocker)
 5. [ Pihole and Unbound with Docker Compose ](#piholeandunboundwithdockercompose)
-6. [ Flashing IoT Devices using Tuya-Convert](#tuyaconvert)
+6. [ Flashing IoT Devices with Tasmota using Tuya-Convert](#tuyaconvert)
 
 <a name="setuppi"></a>
 # Setting Up Raspberry Pi
@@ -260,7 +260,7 @@ Set up a OpenVPN or WireGuard VPN server so that your devices away from home can
 My router supports OpenVPN so I managed to set one up using that. Otherwise you could consider using PiVPN to setup a Wireguard or OpenVPN server on your raspberry pi. See https://www.pivpn.io/.
 
 <a name="tuyaconvert"></a>
-# Flashing Smart Devices with Tuya-Convert
+# Flashing IoT Devices with Tasmota Using Tuya-Convert
 
 ### Sources
 
