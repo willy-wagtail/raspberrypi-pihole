@@ -260,7 +260,7 @@ Set up a OpenVPN or WireGuard VPN server so that your devices away from home can
 My router supports OpenVPN so I managed to set one up using that. Otherwise you could consider using PiVPN to setup a Wireguard or OpenVPN server on your raspberry pi. See https://www.pivpn.io/.
 
 <a name="tuyaconvertdocker"></a>
-# Flashing Tasmota with Tuya-Convert and Docker
+# Flashing Smart Device with Tuya-Convert
 
 ### Sources
 
@@ -275,8 +275,16 @@ This documents what I did to successfully flash the [Gosund (UP111) UK smart plu
 
 These smart plugs were bought from Amazon on January 2021. Devices purchased later may have had their firmware updated which prevents this method from working, so do your own research online to check your device's compatibility.
 
-### Installing Tuya-Convert using Docker
+### Installing Tuya-Convert
 
+Carry out this process on a fresh Raspberry Pi OS install by swapping out your micro SD card, or re-flashing it for this purpose.
 
+Perform a ``sudo apt update`` and install git, ``sudo apt install git -y``.
 
+ Clone the Tuya-Convert git repo, ``git clone https://github.com/ct-Open-Source/tuya-convert``, then ``cd tuya-convert``, and run ``./install_prereq.sh``.
 
+Start the flashing process by running ``./start_flash.sh``. Following the instructions, type "yes" and enter. It'll ask you if it can terminate dnsmasq process to free up port 53, type "y". It'll ask you to terminate mosquitto to free up port 1883, type "y". The script should have turned the raspberry pi into a WiFi access point with SSID "vtrust-flash".
+
+Connect a smartphone (or any device) to "vtrust-flash" WiFi access point.
+
+// to be continued
