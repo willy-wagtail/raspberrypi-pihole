@@ -59,6 +59,14 @@ To start the Raspberry pi back up, simply turn on the power.
 
 There are ways to create a power button using the GPIO pins on the board. // TODO: explore this
 
+### Power Consumption Tweaks
+
+If you are running a headless Raspberry Pi, then according to [this blog by Jeff Geering](https://www.jeffgeerling.com/blogs/jeff-geerling/raspberry-pi-zero-conserve-energy), you can save a little bit of power by disabling the HDMI display circuitry.
+
+Run the command ``/usr/bin/tvservice -o`` to disable HDMI. Also run ``sudo nano /etc/rc.local`` and add the command there too in order to disable HDMI on boot.
+
+(To enable again, run ``/usr/bin/tvservice -p``, and remove from ``/etc/rc.local``).
+
 <a name="securingpi"></a>
 # Securing Raspberry Pi
 
@@ -201,6 +209,7 @@ https://github.com/pi-hole/docker-pi-hole
 https://docs.pi-hole.net/guides/unbound/  
 https://github.com/chriscrowe/docker-pihole-unbound  
 https://github.com/anudeepND/whitelist  
+https://discourse.pi-hole.net/t/solved-dns-resolution-is-currently-unavailable/33725/3  
 
 ### Start Pihole in container
 
@@ -260,6 +269,13 @@ Set up a OpenVPN or WireGuard VPN server so that your devices away from home can
 
 My router supports OpenVPN so I managed to set one up using that. Otherwise you could consider using PiVPN to setup a Wireguard or OpenVPN server on your raspberry pi. See https://www.pivpn.io/.
 
+### Troubleshooting: DNS resolution is currently unavailable
+
+I encountered [this issue](https://discourse.pi-hole.net/t/solved-dns-resolution-is-currently-unavailable/33725) a couple of times. When starting the docker container, I see in the logs that the "DNS resolution is currently unavailable".
+
+This is solved by ``sudo nano /etc/resolv.conf``, and removing ``nameserver <host-IP-address>``, leaving your home router's IP address. Or, replace it with ``search home`` there instead of having your host IP address.
+
+Restart the pihole-unbound container after making the change.
 
 <a name="log2ram"></a>
 # Log2Ram
@@ -274,7 +290,11 @@ https://www.geekbitzone.com/posts/log2ram/log2ram-raspberry-pi/
 
 Log2ram is software that redirects logs to memory instead of the micro-SD card, only writing to the micro-SD card at set intervals or during system shutdown. By default, the interval is once a day. This supposedly extends the lifespan of micro-SD cards by reducing the number of writes to disk. 
 
-(Another solution could be writing logs to a external NAS.)
+> If you use Docker on your Raspberry Pi, note that each container has its logs written inside their respective containers rather than ``/var/log``, so won't benefit from log2ram. 
+>
+> I've yet to explore a way to map them to /var/log to get benefit from log2ram (e.g. as suggested in [this github issue](https://github.com/gcgarner/IOTstack/issues/8)).
+
+
 
 ### Installing Log2Ram
 
@@ -291,6 +311,10 @@ Reboot once installed, ``sudo reboot``.
 After reboot, check that log2ram is mounted on ``/var/log`` by runninng ``df -h``.
 
 Also verify that log2ram is mounted to ``/var/log`` by running ``mount``.
+
+### Uninstall
+
+To uninstall, run ``sudo apt remove log2ram --purge``. The purge option removes the config files as well. Using the verify steps above, check that log2ram has unmounted.
 
 <a name="tuyaconvert"></a>
 # Flashing IoT Devices with Tasmota Using Tuya-Convert
