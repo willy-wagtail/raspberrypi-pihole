@@ -283,8 +283,24 @@ Perform a ``sudo apt update`` and install git, ``sudo apt install git -y``.
 
  Clone the Tuya-Convert git repo, ``git clone https://github.com/ct-Open-Source/tuya-convert``, then ``cd tuya-convert``, and run ``./install_prereq.sh``.
 
+ ### Flashing the device
+
 Start the flashing process by running ``./start_flash.sh``. Following the instructions, type "yes" and enter. It'll ask you if it can terminate dnsmasq process to free up port 53, type "y". It'll ask you to terminate mosquitto to free up port 1883, type "y". The script should have turned the raspberry pi into a WiFi access point with SSID "vtrust-flash".
 
 Connect a smartphone (or any device) to "vtrust-flash" WiFi access point.
 
-// to be continued
+Plug your IoT device in and put it in autoconfig/smartconfig/pairing mode - you should know it's in the right mode when the LED starts blinking. This is usually done by pressing and holding the primary button of the device. In my case, I pressed the power button of the plug for 5 seconds.
+
+Press enter to start flashing.
+
+It'll then prompt you to ask which image you'd like to load onto the device. I flashed tasmota.bin using option "2", then confirm with "y". And thats it! 
+
+>**Remember to keep your device plugged in for the next step.**
+
+### Configure Tasmota
+
+The device should now broadcast a Wifi access point with SSIP ``tasmota-xxxx``. Connect to it with your phone or another device to configure Tasmota.
+
+One connected to the Tasmota Wifi, you can configure your home WiFi credentials. Make sure to double check the credentials before pressing "Save".
+
+After pressing "Save", the device should restart and automatically connect to your home network.
