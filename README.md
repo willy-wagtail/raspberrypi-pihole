@@ -268,6 +268,9 @@ https://github.com/ct-Open-Source/tuya-convert
 https://www.youtube.com/watch?v=dt5-iZc4_qU  
 https://tasmota.github.io/docs/About/
 
+https://tasmota.github.io/docs/Upgrading/  
+http://ota.tasmota.com/tasmota/  
+
 https://templates.blakadder.com/index.html  
 https://templates.blakadder.com/howto.html  
 https://templates.blakadder.com/gosund_UP111.html  
@@ -306,14 +309,24 @@ The device should now broadcast a Wifi access point with SSIP ``tasmota-xxxx``. 
 
 One connected to the Tasmota Wifi, you can configure your home WiFi credentials. Make sure to double check the credentials before pressing "Save".
 
-After pressing "Save", the device should restart and automatically connect to your home network. This step actually took a bit of time for me as the device kept starting up in Access Point mode. I had to power on and off the device a few times for it to connect to the home network.
+After pressing "Save", the device should restart and automatically connect to your home network. Find the IP address of the IoT device on your home network via your router or a network analyser app like Fing and connect to it to see the device's Tasmota web page.
+
+### Upgrade Tasmota Firmware if required
+
+Now on my device is Tasmota v8.1.0.2. However the configuration template (see next section) for my device is for Tasmota v9.1+. So next we'll need to upgrade the firmware. Note that there is a [defined upgrade path](https://tasmota.github.io/docs/Upgrading/#upgrade-flow) which we must follow, so we'll upgrade in steps from v8.1.0 to v8.5.1 to v9.1. Download the files by clicking on those versions on the [Tasmota Upgrade page](https://tasmota.github.io/docs/Upgrading/#upgrade-flow).
+
+On the device's Tasmota web page, click on "Firmware Upgrade", upload the downloaded v8.5.1 ``tasmota-lite.bin`` file in the "Upgrade by file upload" section, and "Start upgrade". After some time, you should see it say "Upload Successful". It will then reboot. 
+
+Repeat the above for v9.1. Note that the downloaded v9.1 file ``tasmota-lite.bin.gz`` is gzip compressed (new feature).
+
+Lastly, either copy the URL to the non-lite and latest ``tasmota.bin.gz`` file, which can be found [here](http://ota.tasmota.com/tasmota/), in the "Upgrade by web server" section, or download it and uploading the file as before, then clicking "Start upgrade".
 
 ### GPIO Configuration on Tasmota 
 
 > See this link for screenshots of the below steps: https://templates.blakadder.com/howto.html
 
-Find the IP address of the IoT device on your home network via your router or a network analyser app like Fing. On a browser, go to the IP address, go to "Configuration", then "Configure Other". 
+On the device's Tasmota web page, go to the IP address, go to "Configuration", then "Configure Other". 
 
 Search for your specific device's GPIO configuration on [Tasmota templates](https://templates.blakadder.com/index.html). My smart plug's configuration template is found mine [here](https://templates.blakadder.com/gosund_UP111.html). 
 
-Paste in the device's GPIO configuration template string in "Templates" input field, check "Activate", then press "Save". The device should now reboot with a name reflecting the template. It should have ``Module 0`` selected which is the new template.
+Paste in the device's GPIO configuration template string in "Templates" input field, check "Activate", then press "Save". The device should now reboot with the module name specified in the template selected - in this case ``Gosund UP111 Module``.
