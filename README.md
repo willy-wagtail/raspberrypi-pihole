@@ -6,7 +6,8 @@
 4. [ Installing Docker and Docker Compose ](#installingdocker)
 5. [ Pihole and Unbound with Docker Compose ](#piholeandunboundwithdockercompose)
 6. [ Log2Ram ](#log2ram)
-7. [ Flashing IoT Devices with Tasmota using Tuya-Convert](#tuyaconvert)
+7. [ Flashing IoT Devices with Tasmota using Tuya-Convert ](#tuyaconvert)
+8. [ Home Assistant ](#homeassistant)
 
 <a name="setuppi"></a>
 # Setting Up Raspberry Pi
@@ -387,3 +388,19 @@ On the device's Tasmota web page, go to the IP address, go to "Configuration", t
 Search for your specific device's GPIO configuration on [Tasmota templates](https://templates.blakadder.com/index.html). My smart plug's configuration template is found mine [here](https://templates.blakadder.com/gosund_UP111.html). 
 
 Paste in the device's GPIO configuration template string in "Templates" input field, check "Activate", then press "Save". The device should now reboot with the module name specified in the template selected - in this case ``Gosund UP111 Module``.
+
+<a name="homeassistant"></a>
+# Home Assistant
+
+### Sources
+
+https://www.home-assistant.io/getting-started/  
+https://www.home-assistant.io/docs/installation/docker/#docker-compose  
+
+### Installing Home Assistant
+
+Create docker-compose.yml file with [these contents](https://www.home-assistant.io/docs/installation/docker/#docker-compose). Change the volume map by adding your host's path to config. Run ``docker-compose up -d``.
+
+### Onboarding Home Assistant
+
+Go to ``http://<IP-address-of-pi>:8123``.
