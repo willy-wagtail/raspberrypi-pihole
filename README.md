@@ -238,7 +238,7 @@ Clone this git repository by running `git clone https://github.com/willypapa/ras
 >
 > Change the `image` property in the `docker-compose.yml` file from to your own, `image: <your_docker_username>/pihole-unbound:latest`.
 
-In the directory where the `docker-compose.yml` is (i.e. `/raspberrypi`), create a `.env` file by running `sudo touch .env`, then populate it with the following environment variables. These are referred to within the docker-componse.yml file.
+In the directory where the `docker-compose.yml` is (i.e. `/raspberrypi`), create a `.env` file by running `sudo touch .env`, then populate it with the following environment variables. These are referred to within the docker-compose.yml file.
 
 ```
 PIHOLE_PASSWORD=password
