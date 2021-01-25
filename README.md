@@ -14,13 +14,14 @@
 
 ### Sources
 
+https://www.raspberrypi.org/software/  
 https://www.raspberrypi.org/documentation/installation/installing-images/README.md  
 https://www.raspberrypi.org/documentation/remote-access/ssh/README.md  
 https://www.raspberrypi.org/documentation/configuration/wireless/headless.md  
 
 ### Preparing SD Card
 
-On another device, download and use the "Raspberry Pi Imager" to flash RaspberryPi OS onto a micro-SD card. The Lite version does not include the desktop GUI, so use that if you are setting the raspberry pi up headless.
+On another device, download and use the [Raspberry Pi Imager](https://www.raspberrypi.org/software/) to write the RaspberryPi OS image onto a micro-SD card. The Lite version does not include the desktop GUI, so use that if you are setting the raspberry pi up headless.
 
 To enable ssh, create empty file called `.ssh` at root level on your SD card before the first boot.
 
@@ -296,7 +297,6 @@ Log2ram is software that redirects logs to memory instead of the micro-SD card, 
 > I've yet to explore a way to map them to /var/log to get benefit from log2ram (e.g. as suggested in [this github issue](https://github.com/gcgarner/IOTstack/issues/8)).
 
 
-
 ### Installing Log2Ram
 
 Add Log2Ram repository to our apt sources list, ``echo "deb http://packages.azlux.fr/debian/ buster main" | sudo tee /etc/apt/sources.list.d/azlux.list``.
@@ -397,12 +397,10 @@ Paste in the device's GPIO configuration template string in "Templates" input fi
 ### Sources
 
 https://www.home-assistant.io/getting-started/  
-https://www.home-assistant.io/docs/installation/docker/#docker-compose  
+https://www.home-assistant.io/hassio/installation/  
 
-### Installing Home Assistant
+### Home Assistant OS
 
-Create docker-compose.yml file with [these contents](https://www.home-assistant.io/docs/installation/docker/#docker-compose). Change the volume map by adding your host's path to config. Run ``docker-compose up -d``.
+The more beginner friendly way to get started with home assistant is installing the Home Assistant OS on the micro-SD card for your Raspberry Pi. It has lots of community created add-ons available where you would otherwise have to configure yourself if you didn't use the OS. Follow the [instructions here](https://www.home-assistant.io/getting-started/). Instead of balenaEtcher to write the image to the SD card, I used [Raspberry Pi Imager](https://www.raspberrypi.org/software/).
 
-### Onboarding Home Assistant
-
-Go to ``http://<IP-address-of-pi>:8123``.
+> The alternative is to install Home Assistant core on your Raspberry Pi OS using, say, Docker Compose by following [these instructions](https://www.home-assistant.io/docs/installation/docker/#docker-compose). This is not for beginners because you will have to set up everything else yourself (such as an MQTT broker), where it might be available as an Addon in Home Assistant OS.
