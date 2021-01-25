@@ -385,7 +385,7 @@ Lastly, either copy the URL to the non-lite and latest ``tasmota.bin.gz`` file, 
 
 > See this link for screenshots of the below steps: https://templates.blakadder.com/howto.html
 
-On the device's Tasmota web page, go to the IP address, go to "Configuration", then "Configure Other". 
+On the device's Tasmota web page, go to "Configuration", then "Configure Other". 
 
 Search for your specific device's GPIO configuration on [Tasmota templates](https://templates.blakadder.com/index.html). My smart plug's configuration template is found mine [here](https://templates.blakadder.com/gosund_UP111.html). 
 
