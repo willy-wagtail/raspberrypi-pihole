@@ -234,7 +234,7 @@ Clone this git repository by running `git clone https://github.com/willypapa/ras
 >
 > Log into docker using command `docker login` and supply your dockerhub username and password. 
 >
-> Now build and push your own image to your own DockerHub using `docker build -t <your_docker_username>/pihole-unbound`, then `docker push <your_docker_username>/pihole-unbound`. 
+> Now build and push your own image to your own DockerHub using `docker build -t <your_docker_username>/pihole-unbound .`, then `docker push <your_docker_username>/pihole-unbound`. 
 >
 > Change the `image` property in the `docker-compose.yml` file from to your own, `image: <your_docker_username>/pihole-unbound:latest`.
 
