@@ -387,7 +387,7 @@ Lastly, either copy the URL to the non-lite and latest ``tasmota.bin.gz`` file, 
 
 On the device's Tasmota web page, go to "Configuration", then "Configure Other". 
 
-Search for your specific device's GPIO configuration on [Tasmota templates](https://templates.blakadder.com/index.html). My smart plug's configuration template is found mine [here](https://templates.blakadder.com/gosund_UP111.html). 
+Search for your specific device's GPIO configuration on [Tasmota templates](https://templates.blakadder.com/index.html). My smart plug's configuration template is found [here](https://templates.blakadder.com/gosund_UP111.html). 
 
 Paste in the device's GPIO configuration template string in "Templates" input field, check "Activate", then press "Save". The device should now reboot with the module name specified in the template selected - in this case ``Gosund UP111 Module``.
 
