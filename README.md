@@ -341,7 +341,7 @@ These smart plugs were bought from Amazon on January 2021. Devices purchased lat
 
 ### Installing Tuya-Convert
 
-Carry out this process on a fresh Raspberry Pi OS install by swapping out your micro SD card, or re-flashing it for this purpose.
+Carry out this process on a fresh Raspberry Pi OS install by swapping out your micro SD card, or re-formatting with a fresh OS for this purpose.
 
 Perform a ``sudo apt update`` and install git, ``sudo apt install git -y``.
 
