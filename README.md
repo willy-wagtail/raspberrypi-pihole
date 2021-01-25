@@ -262,7 +262,7 @@ Run `git clone https://github.com/anudeepND/whitelist.git`, then `sudo python3 w
 
 ### Change Your Router's DNS Server
 
-Log onto your home network's router (usually device 1 on your subnet - e.g. 192.168.0.1), and change the default server to point to the IP address of the raspberry pi running pihole. Instructions on how to do this will vary depending on your router.
+Log onto your home network's router (usually device 1 on your subnet - e.g. 192.168.0.1), and change the default DNS server to be the IP address of the raspberry pi running pihole. Instructions on how to do this will vary depending on your router.
 
 ### Set up VPN Server
 
