@@ -272,7 +272,7 @@ My router supports OpenVPN so I managed to set one up using that. Otherwise you 
 
 ### Troubleshooting: DNS resolution is currently unavailable
 
-I encountered [this issue](https://discourse.pi-hole.net/t/solved-dns-resolution-is-currently-unavailable/33725) a couple of times. When starting the docker container, I see in the logs that the "DNS resolution is currently unavailable".
+I encountered [this issue](https://discourse.pi-hole.net/t/solved-dns-resolution-is-currently-unavailable/33725) a couple of times. When starting the pihole-unbound docker container, I see in the logs that the "DNS resolution is currently unavailable".
 
 This is solved by ``sudo nano /etc/resolv.conf``, and removing ``nameserver <host-IP-address>``, leaving your home router's IP address. Or, replace it with ``search home`` there instead of having your host IP address.
 
