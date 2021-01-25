@@ -254,7 +254,7 @@ To confirm Pihole is up and pointing to unbound dns server, go to the local IP a
 
 ### Whitelist common false-positives
 
-This is optional. The github repo we refer to here keeps a list of common false-positive domains for us to whitelist.
+This is optional. Ths [github repo](https://github.com/anudeepND/whitelist.git) keeps a list of common false-positive domains for us to whitelist.
 
 The whitelist is installed using a python script. However, the pihole/pihole docker image does not include a python installation. So we have to run the following on the host raspberry pi itself which should have python3 installed.
 
@@ -268,7 +268,7 @@ Log onto your home network's router (usually device 1 on your subnet - e.g. 192.
 
 Set up a OpenVPN or WireGuard VPN server so that your devices away from home can browse the internet through your locally hosted Pihole. See https://docs.pi-hole.net/guides/vpn/openvpn/overview/.
 
-My router supports OpenVPN so I managed to set one up using that. Otherwise you could consider using PiVPN to setup a Wireguard or OpenVPN server on your raspberry pi. See https://www.pivpn.io/.
+My router supports OpenVPN so I managed to set one up using that. Otherwise you could consider using PiVPN to setup a Wireguard or OpenVPN server on your raspberry pi. See [PiVPN](https://www.pivpn.io/) and [their docs](https://docs.pivpn.io/).
 
 ### Troubleshooting: DNS resolution is currently unavailable
 
