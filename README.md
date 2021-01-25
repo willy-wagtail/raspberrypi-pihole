@@ -371,7 +371,9 @@ After pressing "Save", the device should restart and automatically connect to yo
 
 ### Upgrade Tasmota Firmware if required
 
-Now on my device is Tasmota v8.1.0.2. However the configuration template (see next section) for my device is for Tasmota v9.1+. So next we'll need to upgrade the firmware. Note that there is a [defined upgrade path](https://tasmota.github.io/docs/Upgrading/#upgrade-flow) which we must follow, so we'll upgrade in steps from v8.1.0 to v8.5.1 to v9.1. Download the files by clicking on those versions on the [Tasmota Upgrade page](https://tasmota.github.io/docs/Upgrading/#upgrade-flow).
+Now on my device is Tasmota v8.1.0.2. However the configuration template (see next section) for my device is for Tasmota v9.1+. So next we'll need to upgrade the firmware. Note that we should be cautious of upgrading firmware on an already working device.
+
+There is a [defined upgrade path](https://tasmota.github.io/docs/Upgrading/#upgrade-flow) which we must follow, so we'll upgrade in steps from v8.1.0 to v8.5.1 to v9.1. Download the files by clicking on those versions on the [Tasmota Upgrade page](https://tasmota.github.io/docs/Upgrading/#upgrade-flow).
 
 On the device's Tasmota web page, click on "Firmware Upgrade", upload the downloaded v8.5.1 ``tasmota-lite.bin`` file in the "Upgrade by file upload" section, and "Start upgrade". After some time, you should see it say "Upload Successful". It will then reboot. 
 
