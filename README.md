@@ -357,7 +357,7 @@ Plug your IoT device in and put it in autoconfig/smartconfig/pairing mode - you 
 
 Once the device is in pairing mode, press enter to start flashing.
 
-After some setup, it'll then prompt you to ask which image you'd like to load onto the device. For Tasmota, select the tasmota.bin option by typing "2", then confirm with "y". After it's done, we have Tasmota on our device! Now we can need to configuring it. 
+After some setup, it'll then prompt you to ask which image you'd like to load onto the device. For Tasmota, select the tasmota.bin option by typing "2", then confirm with "y". After it's done, we have Tasmota on our device! Now we can start configuring it. 
 
 > **Remember to keep your device plugged in for the next step.**
 
