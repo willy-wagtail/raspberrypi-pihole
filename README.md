@@ -399,13 +399,13 @@ Paste in the device's GPIO configuration template string in "Templates" input fi
 
 https://github.com/ct-Open-Source/tuya-convert/issues/551  
 
-Never really solved it. The first connect to vtrust-flash worked for me. It's the subsequent attempts that continually fail to connect.
+Never really solved it. The first connect to vtrust-flash worked for me so I flashed all the plugs at once because the subsequent attempts to connect to vtrust-flash continually fails.
 
 ### Troubleshooting: Tasmota has issues connecting to Asus Routers
 
 https://github.com/arendst/Tasmota/issues/7770
 
-Not fully solved. This seems to be work for a while but is still not 100% stable: https://github.com/arendst/Tasmota/issues/7770#issuecomment-660685751
+Not fully solved. But in [setting the Preamble Type to Short](https://github.com/arendst/Tasmota/issues/7770#issuecomment-591971563) and [adding Wireless Mac Filters](https://github.com/arendst/Tasmota/issues/7770#issuecomment-767198267) seem to be work for a while but is still not 100% stable.
 
 <a name="homeassistant"></a>
 # Home Assistant
