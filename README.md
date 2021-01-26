@@ -395,7 +395,13 @@ Search for your specific device's GPIO configuration on [Tasmota templates](http
 
 Paste in the device's GPIO configuration template string in "Templates" input field, check "Activate", then press "Save". The device should now reboot with the module name specified in the template already selected: in this case ``Gosund UP111 Module``.
 
-### TroubleShooting: Tasmota has issues connecting to Asus Routers
+### Troubleshooting: Issue connecting to Tuya-Convert's vtrust-flash access point
+
+https://github.com/ct-Open-Source/tuya-convert/issues/551  
+
+Never really solved it. The first connect to vtrust-flash worked for me. It's the subsequent attempts that continually fail to connect.
+
+### Troubleshooting: Tasmota has issues connecting to Asus Routers
 
 https://github.com/arendst/Tasmota/issues/7770
 
@@ -415,7 +421,10 @@ The more beginner friendly way to get started with home assistant is installing 
 
 > The alternative is to install Home Assistant core on your Raspberry Pi OS using, say, Docker Compose by following [these instructions](https://www.home-assistant.io/docs/installation/docker/#docker-compose). This is not for beginners because you will have to set up everything else yourself (such as an MQTT broker), where it might be available as an Addon in Home Assistant OS.
 
-
 ### Mosquitto MQTT broker add-on
 
 https://github.com/home-assistant/addons/blob/master/mosquitto/DOCS.md
+
+### File Editor add-on
+
+To edit configuration.yml, install the File Editor add-on from the store: https://www.home-assistant.io/getting-started/configuration/
