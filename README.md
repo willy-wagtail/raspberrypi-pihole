@@ -391,6 +391,12 @@ Search for your specific device's GPIO configuration on [Tasmota templates](http
 
 Paste in the device's GPIO configuration template string in "Templates" input field, check "Activate", then press "Save". The device should now reboot with the module name specified in the template already selected: in this case ``Gosund UP111 Module``.
 
+### TroubleShooting: Tasmota has issues connecting to Asus Routers
+
+https://github.com/arendst/Tasmota/issues/7770
+
+This seems to be working for now: https://github.com/arendst/Tasmota/issues/7770#issuecomment-660685751
+
 <a name="homeassistant"></a>
 # Home Assistant
 
@@ -404,3 +410,8 @@ https://www.home-assistant.io/hassio/installation/
 The more beginner friendly way to get started with home assistant is installing the Home Assistant OS on the micro-SD card for your Raspberry Pi. It has lots of community created add-ons available where you would otherwise have to configure yourself if you didn't use the OS. Follow the [instructions here](https://www.home-assistant.io/getting-started/). Instead of balenaEtcher to write the image to the SD card, I used [Raspberry Pi Imager](https://www.raspberrypi.org/software/).
 
 > The alternative is to install Home Assistant core on your Raspberry Pi OS using, say, Docker Compose by following [these instructions](https://www.home-assistant.io/docs/installation/docker/#docker-compose). This is not for beginners because you will have to set up everything else yourself (such as an MQTT broker), where it might be available as an Addon in Home Assistant OS.
+
+
+### Mosquitto MQTT broker add-on
+
+https://github.com/home-assistant/addons/blob/master/mosquitto/DOCS.md
