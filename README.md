@@ -405,7 +405,7 @@ Never really solved it. The first connect to vtrust-flash worked for me. It's th
 
 https://github.com/arendst/Tasmota/issues/7770
 
-This seems to be working for now: https://github.com/arendst/Tasmota/issues/7770#issuecomment-660685751
+Not fully solved. This seems to be work for a while but is still not 100% stable: https://github.com/arendst/Tasmota/issues/7770#issuecomment-660685751
 
 <a name="homeassistant"></a>
 # Home Assistant
