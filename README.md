@@ -405,7 +405,9 @@ Never really solved it. The first connect to vtrust-flash worked for me so I fla
 
 https://github.com/arendst/Tasmota/issues/7770
 
-Not fully solved. But in [setting the Preamble Type to Short](https://github.com/arendst/Tasmota/issues/7770#issuecomment-591971563) and [adding Wireless Mac Filters](https://github.com/arendst/Tasmota/issues/7770#issuecomment-767198267) seem to be work for a while but is still not 100% stable.
+Not fully solved. But in [setting the Preamble Type to Short](https://github.com/arendst/Tasmota/issues/7770#issuecomment-591971563), [adding Wireless Mac Filters](https://github.com/arendst/Tasmota/issues/7770#issuecomment-767198267) seem to be work for a while but is still not 100% stable and changed RTS Threshold from 2347 to 2000.
+
+It's much stabler but it still doesnt reconnect 100% after a restart still.
 
 <a name="homeassistant"></a>
 # Home Assistant
