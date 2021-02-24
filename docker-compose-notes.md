@@ -139,7 +139,7 @@ Some docker run commands only run in swarm mode, e.g. -m for setting memory or -
 
 - The ``depends_on`` key
 
-  - Specify dependencies between services using the depends_on key. 
+  - Specify dependencies between services using the ``depends_on`` key. 
 
     - Docker Compose will use this to determine the order in which to start the services.
 
