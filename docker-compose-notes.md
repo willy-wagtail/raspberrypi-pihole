@@ -230,29 +230,29 @@ services:
 - Within each service configuration, there is a ``network`` key to specify which network that service joins. You can create hostname aliases on the network as well.
 
 ```
-		version: '3'
-		services: 
-			proxy: 
-				image: repo/proxy
-				networks:
-					- frontend
-			app:
-				image: repo/app
-				networks:
-					- frontend
-					- backend
-			db:
-				image: redis
-				networks:
-					backend:
-						aliases:
-							- database
-		networks:
-			# uses default network config
-			frontend:
-			# uses external network created outside compose file
-			backend:
-				external: true
+version: '3'
+services: 
+  proxy: 
+    image: repo/proxy
+    networks:
+      - frontend
+  app:
+    image: repo/app
+    networks:
+      - frontend
+      - backend
+  db:
+    image: redis
+    networks:
+      backend:
+        aliases:
+          - database
+networks:
+  # uses default network config
+  frontend:
+  # uses external network created outside compose file
+  backend:
+    external: true
 ```
 
 - In the example above: 
