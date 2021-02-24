@@ -463,7 +463,7 @@ services:
         - .:/src
   ```
 
-  - Developmment overrides can include using a volume to mount the source code in your local machine to the container's ``/src`` directory. With this override, the source code can be modified, and the changes will be reflected in the running container.
+  - Development overrides can include using a volume to mount the source code in your local machine to the container's ``/src`` directory. With this override, the source code can be modified, and the changes will be reflected in the running container.
 
   - It isn't always possible to use a common Dockerfile for each environment you wish to use the container. In that case we can override the Dockerfile for each environment (e.g.  ``(prod | dev).dockerfile`` files), then using the  ``builds`` key to point to the respective dockerfile in the respective ``(prod | dev).docker-compose.yml`` files.
 
