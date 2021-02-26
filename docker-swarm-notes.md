@@ -577,4 +577,18 @@ Demo notes
 
 - ``docker stack --help`` 
   - ``up``, ``down`` are aliases for ``deploy`` and ``rm``, so you can use the same commands as ``docker-compose``
-- ````
+- ``docker stack deploy --help`` - can prune services, control when image is resolved, and pass credentials if images in private repo
+- ``docker stack deploy -c docker-stack.yml demo`` - to deploy the stack
+- change the nodenamer service, adding the following invalid setting and rerun the deploy command. Each node has 1 cpu unit, so our 3 nodes only has 3 cpus, and wont have enough for all 6 replicas
+
+  ```
+  ...
+  deploy:
+    replicas: 6
+    resources:
+      cpus: '0.5'
+  ...
+  ```
+    - swarm respects resource constraints as it deploys containers. here, it deployed 2 replicas on vm2, and 1 on vm3. Once both on vm2 are up, it stops one on vm2 so it respects the resource limitations.
+
+- ``docker stack services demo`` - to list the services in the stack - can see that not all of the 6 replicas have been started due to resource constraints.
