@@ -17,31 +17,19 @@ Contents
 ### 1.1 Why?
 
 - Once apps reach a certain level of complexity or scale, you use several machines running their own Docker Engine with their own containers.
-
 - Container orchestration manages multiple container hosts in concert. Docker swarm is one such tool.
-
 - Swarm mode is built into the docker engine and, when enabled, provides native container orchestration.
-
 - Features include:
   - Integrated cluster management within docker engine
-
   - Declarative service model
-
   - Desired state reconcilation
-
   - Certificates and cryptographic tokens to secure the cluster
-
   - Container orchestration features
     - Service scaling
-
     - Multiple host networking
-
     - Resource-aware scheduling
-
     - Load balacing
-
     - Rolling updates
-
     - Restart policies
 
 ### 1.2 Two different solutions
@@ -50,14 +38,11 @@ Docker has two cluster management solutions, and terminology may be confusing:
 
   - Docker swarm standalone
     - The first container orchestration project by Docker
-
     - Uses Docker API to turn a pool of Docker hosts into a single virtual Docker host using a proxy system
-
     - Now referred as Docker Swarm standalone in documentation
   
   - Docker swarm mode (swarmkit)
     - Built into the Docker engine since version 1.12
-
     - Docker generally recommends swarm mode
 
 These notes deals exclusively with docker swarm mode.
@@ -66,45 +51,29 @@ These notes deals exclusively with docker swarm mode.
 
 - Swarm 
   - One or more Docker Engines running in swarm mode
-
 - Node
   - Each instance of the Docker Enginer in the swarm
-
   - Possible to run multiple nodes on a single machine, e.g. using VMs
-
   - A node is either a manager or a worker
-
 - Managers
   - Responsible for accepting specifications from users and drive the swarm to the specified desired state. They do so by delegating work to workers
-
 - Workers
   - Responsible for running the delegated work
-
   - Workers also run an agent that reports back to the managers on the status of their work
-
 - Service
   - Specifications that users submit to managers
-
   - Declares its desired state including networks, volumes, number of replicas, resource constraints, and other details.
-
   - Managers makes sure the actual state of the swarm matches the desired state if it is possible to realised.
-
   - There are two types of services
-
     - Replicated service
       - The number of replicas for a replicated service is based on the desired scale.
-
     - Global service
       - Allocates one unit of work for each node in the swarm
       - Can be useful for monitoring services
-
 - Tasks
   - Units of work delegated by managers to realise a service configuration
-
   - Tasks correspond to running containers that are replicas of the service
-
   - Managers schedule tasks across nodes in the swarm. If a node leaves the swarm, the task that the node was running will be rescheduled between the remaining nodes in the swarm.
-
   - By default, managers can also run tasks like workers allowing you to have a single node swarm.
     - However, managers can be set to only schedule tasks, which may be desirable in production.
 
@@ -119,114 +88,73 @@ A web interface only available in the enterprise edition of Docker built on top 
 ### 2.1 Overlay networks
 
 - A multi-host network in swarm is natively supported with the overlay network driver with no need for any external configuration.
-
 -  Overlay networks only apply to swarm services and you can attach a service running in the swarm to one or more overlay networks. Containers not part of a swarm can not access overlay networks.
-
 - Managers will automatically extend overlay networks to nodes in the swarm that run tasks requiring access.
-
 - Network isolation and firewall rules apply to overlay networks just as they do for bridge networks.
-
   - Containers within a Docker network have access on all ports in the same network.
-
   - Access is denied between containers that don't share a common network.
-
   - Traffic originating inside of a Docker network and not destined for a Docker host is permitted, e.g. access to the internet.
-
   - Traffic coming into a docker network is denied by default. Ports must be published in order to grant access to traffic from outside docker.
 
 ### 2.2 Service discovery and load balancing
 
 - A service discovery mechanism is required in order to connect to the nodes running tasks for a service.
-
   - Swarm mode has an integrated service discovery system based upon DNS and is implemented in the docker engine. It is used for resolving names to IP addresses.
-
   - The same system is used when not running in swarm mode. Service discovery in docker is scoped to a network. The network can be an overlay (spanning multiple hosts). The same internal DNS system is used.
-
   - All nodes in a network store corresponding DNS records for the network. Only service replicas in the network can resolve other services and replicas in the same network by name.
-
   - Each task (or container) of a given service is discoverable with a name to IP mapping in the internal DNS. 
-
     - Because services can be replicated across multiple nodes, docker assigns a service a single virtual IP (VIP) and requests for the VIP address are automatically load balanced across all the healthy tasks spread across overlay network.
-
     - By using a VIP, clients are sheltered from the internal load balancing as they just to interact with a single IP address. Docker manages the load balancing for you since services can scale and tasks can change the node that they are scheduled on.
-
     - Request -> Service Discovery -> Service VIP -> IPVS Load Balancing -> Individual Task (Container)
 
 - Example
-
   - Two services deployed in a swarm: service A with one replica, and service B with two replicas.
-
   - When service A makes a request for service B, the VIP of service B is resolved by the DNS server, and service A uses that VIP to make a request to service B.
-
   - Using support for IP virtual servers (IPVS), the request for the VIP address is routed to one of the two nodes running service B tasks.
 
-
 - Besides the default vIP, load balancing can be configured using DNS round robin (RR) on a per service basis. 
-
   - When DNS round robin is used, the docker engine's DNS server resolves the server name to an individual task IP address by cycling through the list of IP addresses of nodes. 
-  
+
   - If you need more control, DNS RR can be used for integrating you own external load balancer.
 
 ### 2.3 External access
 
 - In swarm mode, there are two modes for publishing ports
-
   - Host mode
-
     - The same as when publishing a port when not in swarm mode where the container's port is published on the host that is running the task for a service.
-
     - If you have more tasks than available hosts, tasks will fail to run because the host port can only be bound to one task.
-
     - You can omit a host port to allow Docker to automatically assign an available port number in the default port range of ``30000`` to ``32767``. 
-
       - More difficult to work with and no load balancing unless you configure it externally.
-
     - Useful if you have an external service discovery service, and potentially for global services, where one task for a service runs on each node. 
-    
       - E.g. the global service that monitors each node's health should not be load balanced since you want to get the status of the specific node.
-
   - Ingress mode - default service port publishing mode.
-
     - This mode load balances a published port across all tasks of a service. All nodes in the swarm publish the port. 
-    
       - This is different from host mode where the node only publishes the port if it is running a task for the service.
-
     - Requests are round robin load balanced across the healthy instances of the service's tasks regardless of the node that receives the request.
-
     - This mode is ideal when you have multiple replicas of a service and need to load balance between them.
 
   
 ### 2.4 Routing Mesh
 
 - Combines an overlay network and a service virual IP
-
   - manager creates an overlay network called ``ingress`` on initiation of a swarm
-
   - every node that joins the swarm is in the ingress network
-
   - when a node receives an external request, it resolves the service name to a vIP
-
   - the IPVS load balances the request to a service replica over the ingress network
 
 - The nodes need to have a couple of ports open
-
   - port 7946 for both TCP and UDP protocols to enable container network discovery
-
   - port 4789 for UDP protocol to enable the container ingress network
 
 - You can add an external load balancer on top of the load balancing provided by the routing mesh.
-
   - E.g. if you have nodes running on the cloud, they can be running in a private subnet on the cloud not directly accessible from the internet. You then provision a cloud load balancer to handle requests from the internet and node balance them across nodes in the swarm. The swarm nodes then load balance again across nodes running tasks for the service.
 
 - Requires version 17.09 or greater if running Routing Mesh on Windows.
 
 - Besides ingress network, docker creates the ``docker_gwbridge`` network automatically when you initialise a swarm or join a docker host to a swarm.
-
   - It's a virtual bridge that connects the overlay networks to the individual docker daemon's physical network.
-
   - Provides default gateway functionlity for all container attached to the network.
-
-  -  It exists in the kernel of the docker host. You can see it by listing network interfaces on your host.
+  - It exists in the kernel of the docker host. You can see it by listing network interfaces on your host.
 
 ## 3 Orchestration
 
@@ -241,38 +169,25 @@ For replicated services, decisions need to be made by swarm managers for where s
   - placement preferences
 
 - global services can also be restricted to a subset of notes based on those conditions
-
   - a node will never have more than one task for a global service
 
 
 - CPU and memory reservations can be declared
-
   - each service task can only be scheduled on a ndoe with enough cpu and memory
-
   - any tasks that remain stay in a pending state
-
   - global services will only run on nodes that meet a given resource reservation
-
   - setting memory reservations is important to avoid that container or docker daemon to get killed by the OOM killer
 
 - Placement constrains are conditions that compare node attributes to a string value
-
   - built-in attributes for each node are ``node.id``, ``node.hostname``, and ``node.role``
-
   - engine labels are used to indicate things like OS, system architecture, avilable drivers ... e.g. ``engine.labels.operatingsystem``.
-
   - node labels are added for operational purposes and indicate the type of application, datacenter location, server rack, etc ... e.g. ``node.labels.datacenter``.
-
   - all constraints provided must be satisfied by a node in order to be scheduled a service task.
 
 - Placement preference influence how tasks are distributed across appropriate nodes
-
   - currently the only distribution option is ``spread``
-  
   - labels are used as the attribute for spreading tasks
-
   - multiple placement preferences can be specified and a hierarchy of preferences is created.
-
   - nodes that are missing a placement preference are treated as a group and receive tasks in proportion equal to all other label values.
 
   - placement preferences are ignored by global services
@@ -294,9 +209,7 @@ Swarm supports rolling updates where a fixed number of replicas are updated at a
 ### 3.3 Rolling back updates
 
 Docker swarm mode keeps track of the previous configuration for services
-
 - you can rollback manually at any given time, or automatically when an update fails
-
 - the same options available for configuring update behaviour are available separately for configuring rollbacks - i.e.  rollback parallelism, rollback delay, rollback failure action.
 
 ## 4 Consistency
@@ -304,29 +217,19 @@ Docker swarm mode keeps track of the previous configuration for services
 Swarm mode can include several manager and worker nodes that provide fault tolerance and ensure high availability.
 
 - all managers share a consistent internal state of the entire swarm while workers do not share a view of the whole swarm
-
 - managers maintain a consistent view of the state of the cluster by using a consensus algorithm called the Raft consensus
-
   - one manager is elected a leader who makes all the decisions for changing the state of the cluster towards the desired state.
-
   - leader accepts new service requests, service updates, and how to schedule tasks.
-
   - decisions are acted only when there is a ``quorum`` - when a majority of manageres agree to the proposed changes. A manager agrees by acknowledging that they have received a proposed change.
-
   - raft allows for ``(n-1)/2`` failures it can tolerate for the swarm to continue operating. 
     - E.g. in a swarm with 3 managers, raft allows only one manager to fail and the swarm can still operate as normal. However if two managers fail, the cluster state would freeze until a quorum of manageres are available again.
-
   - in the absence of a quorum, currently running services will continue to run, but no new scheduling decisions take place.
-
   - when a swarm is initialised, the first manager is automatically the leader. 
-
   - if the currently elected leader fails, or voluntarily steps down (e.g. to perform system updates), an election between the remaining manager nodes takes place. In the absence of a leader, the current state is frozen.
 
 - manager tradeoffs: 
   - more managers, while increasing fault tolerance, will also increase the amount of managerial traffic required for maintaining a consistent view of the cluster and the time to achieve raft consensus with every state change - thus decreases performance and scalability.
-
   - general rules for setting the number of managers:
-
     - odd number of managers
     - single manager swarm is acceptable for development and test swarms
     - 3 managers can tolerate 1 manager failure
@@ -348,11 +251,8 @@ Swarm mode can include several manager and worker nodes that provide fault toler
     - performance negligence is negligible.
   
 - Raft logs are consensus state change logs recorded by the leader manager such as creating a new service. They are shared with other managers to established a quorum.
-
   - logs are persisted to disk in the raft subdirectory of your docker swarm data directory ``/var/lib/docker/swarm`` on linux.
-
   - you can backup a swarm cluster by backing up the entire swarm directory
-
   - you can restore a new swarm from a backup by replacing the swarm directory with the backed-up copy.
 
 ## 5 Security
