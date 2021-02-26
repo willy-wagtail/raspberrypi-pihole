@@ -1,4 +1,4 @@
-# Docker Compose Notes
+# Docker Swarm Notes
 
 Contents
 
