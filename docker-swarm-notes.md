@@ -9,6 +9,8 @@ Contents
 5. [ Security ](#5-security)
 6. [ Setting up a swarm ](#6-setting-up-a-swarm)
 7. [ Managing nodes ](#7-managing-nodes)
+8. [ Managing services ](#8-managing-services)
+9. [ Working with stacks ](#9-working-with-stacks)
 
 ## 1 Overview
 
@@ -438,3 +440,141 @@ Demo notes
   - ssh into manager node, vm1, and check that there are 3 nodes using ``docker info``. 
 
 ## 7 Managing nodes
+
+- promoting worker node to manager
+- demoting manager to worker
+- availability - active, pause, drain
+- labelling - influence where nodes are placed in the swarm
+
+Demo notes
+- ``docker-machine ssh vm1``- connect to manager node, vm1, for node management
+- ``docker node --help`` - node management commands.
+  - ``ls`` for listing nodes
+  - ``ps`` for listing tasks
+  - ``rm`` for removing nodes from swarm
+  - ``inspect`` lists details about a node
+- ``docker node ls`` - to get a view of the swarm
+- ``docker node promote vm2`` - to promote vm2 to manager
+- ``docker node ls`` - to see vm2 with a manager status of ``Reachable``. The other statuses are ``Leader`` and ``Unavailable``.
+- ``docker node demote vm2`` - to demote vm2 back to worker node
+- ``docker node update --help`` - to check node update options we have available to us
+  - ``label-add``, ``label-rm`` to add or remove a label to the node
+  - ``availability`` to set availability of the node to active, pause or drain
+  - ``role`` which can update a node to worker or manager. ``promote`` and ``demote`` are a shorthand of using this option.
+- ``docker node update --availability drain vm1`` - set vm1 to drain to no tasks will be assigned to it.
+- ``docker node ls`` - to see vm1 with with an availability of ``Drain``.
+- ``docker node update --availability active vm1`` - set vm1 to active to start getting tasks again.
+- ``docker node update --label-add zone=1 vm1`` - to add a label to vm1 to say it's in zone 1
+- ``docker node update --label-add zone=2 vm2`` - to add a label to vm2 to say it's in zone 2
+- ``docker node update --label-add zone=3 vm3`` - to add a label to vm3 to say it's in zone 3
+- ``docker node inspect vm3`` - to see node labels
+  - can also filter out everything but the labels using the format option with go template: ``docker node inspect -f '{{.Spec.Labels}}' vm3``
+
+## 8 Managing services
+
+plan - create 2 services
+- docker swarm visualizer
+- nodenamer
+
+demo notes
+- ``docker service --help`` - command and options for managing services
+- ``docker service create --help`` -- equivalent of ``docker run`` for swarm services
+- ``docker service create --constraint=node.role==manager --mode=global --publish mode=host,target=8080 --mount type=bind,src=/var/run/docker.sock,dst=/var/run/docker.sock --name=viz dockersamples/visualizer``
+  - create swarm visualiser. Command can be shortened with stacks.
+  - visualiser must run on managers, so set a constraint on ``node.role==manager``
+  - for demo only, make service global so every manager runs one task for the service. it could be load balanced because the swarm state is the same regardless of which manager you use.
+  - publish the port using host mode so we can compare with ingress mode
+  - mount is so service container can access the manager nodes docker daemon socket, where it pulls the swarm state information from
+  - name the service ``viz``
+  - specify the image name 
+  - after running, it'll say in the logs ``... Service converged`` to let us know the actual state has converged to the desired state in the service spec.
+- ``docker service inspect``- we can see the service spec using ``inspect``
+- ``docker service ps viz`` - to check that the desired state matches the current state
+
+- on web browser, can navigate to vm1's IP address on port 8080 to view the visualiser - e.g. on 192.168.99.100:8080
+  - can see the nodes, and tasks, and that there is only one viz task in the manager node, as per the constraint. If we had no rule constraints, there would be one on every node.
+
+- ``docker node promote vm2`` - if we promote vm2 to manager, a viz service replica will be started on vm2 because the viz service is global.
+- ``docker service ls`` - to see the changed replica counts
+- ``docker node demote vm2`` - demote vm2 back to worker, so we should end up with only one viz replica.
+
+
+- ``docker service create --constraint node.labels.zone!=1 --replicas=2 --placement-pref 'spread=node.labels.zone' -e NODE_NAME='{{.Node.Hostname}}' -p 80:80 --name nodenamer lrakai/nodenamer:1.0.0``
+  - constraint so that it never runs on zone 1
+  - set 2 replicas, implies the mode is replicaed (default) rather than global. 
+  - managers will spread tasks across the nodes by default, so we set a preference to control how it spreads
+  - set an environment variable, using go template to find the hostname of the node
+  - port 80 is published on ingress mode by default
+  - set name
+  - specify image and verseion
+
+- check on the swarm state in the visualiser!
+
+- test ingress routing by sending request to port 80 on vm1, which isnt running a task for this service. 
+  - You'll see that the page still loads thanks to the ingress routing mesh. 
+  - Reloading a few times, you can see the nodename changing, illustrating the virtual IP load balancing of the service.
+  - sending a request to vm2 gives the same behaviour
+
+rolling update to v1.0.1
+- ``docker service inspect nodenamer`` - before upgrading, inspect the service to take not of the settings for updates
+  - ``Parallelism`` is 1 by default, so only one task i task is upgraded at a time
+  - ``Update order: stop-first`` - only available on docker 17.05 or above. Defaults to ``stop-first`` which stops the task first before starting a new task. Other value is ``start-first`` which starts a new task first before stopping the old one.
+  - ``Update delay`` which sets the delay between rolling updates - defaults to 0.
+
+- ``docker service scale nodenamer=6`` - scales service up to 6 replicas spread across eligible nodes.
+  - even if there are more than one task per node, there are no port conflicts, which would not be the casae if host mode was used for publishing the service port.
+
+- ``docker service update --rollback-paralellism 2 nodenamer`` - sets parallel rollback to 2
+- ``docker service update --image lrakai/nodenamer:1.0.0 nonamer`` - update the version to 1.0.0.
+  - it'll update one task at a time
+- ``docker service rolback nodenamer`` - will rollback two tasks at a time.
+
+## 9 Working with stacks
+
+Stacks are groups of related services that can be orchestrated and scaled together. 
+- stacks are declared using a compose file of version 3 or greater and named ``docker-stack.yml`` by convention.
+- there are some differences between stacks and compose
+  - some options which are valid in compose are ignored in stack, most notably ``build`` and ``depends_on``. Refer to [docs](https://docs.docker.com/compose/compose-file/) to check as these change over time.
+  - options available to stacks and not compose are mostly under the ``deploy:`` key.
+    - ``endpoint_mode``, ``labels``, ``mode``, ``placement``, ``replicas``, ``resources``, ``restart_policy``, ``update_config``
+    - currently no rollback configuration in stack file
+    - placement preferences and endpoint_mode for setting virtual IP or DNS round robin service discovery are only available in version 3.3 Compose files or above
+  - stack files also support ``secrets:`` at the top level
+
+Demo notes
+- ``docker service rm viz nodenamer`` - remove currently running service
+- create ``docker-stack.yml`` file
+
+  ```
+  services:
+    viz:
+      image: dockersamples/visualizer
+      deploy:
+        placement:
+          constraints:
+            - "node.role == manager"
+          mode: global
+        ports:
+          - target: 8080
+            published: 8080
+            protocol: tcp
+            mode: host
+        volumes: 
+          - "/var/run/docker.sock:=/var/run/docker.sock"
+    nodenamer:
+      image: lrakai/nodenamer:1.0.1
+      deploy:
+        replicas: 2
+        placement:
+          constraint:
+            - "node.labels.zone != 1"
+          preferences:
+            - spread: node.labels.zone
+      ports:
+        - "80:80"
+        ...
+  ```
+
+- ``docker stack --help`` 
+  - ``up``, ``down`` are aliases for ``deploy`` and ``rm``, so you can use the same commands as ``docker-compose``
+- ````
