@@ -323,6 +323,29 @@ Can change hostname of your machine
 - ``sudo nano /etc/hosts`` - change localhost hostname to new name
 - ``sudo service hostname restart``
 
-## 13 Secure shell
+## 13 SSH
 
-https://youtu.be/wBp0Rb-ZJak?t=25735
+Secure shell remotely connects to a host
+- ``ssh willy@domainname.com`` ssh command using domain name
+- or ``ssh willy@192.168.0.2`` ssh using IP address
+
+When done, type ``exit`` to close connection
+
+## 14 SFTP
+
+FTP = file transfer protocol.
+- uses port 21
+- transfer is via plain text so anyone can see packet contents
+- recommend never using this
+
+SFTP = secure file transfer protocol
+- ``mkdir sftp-demo``
+- ``cd sftp-demo``
+- ``touch name.txt``
+- ``sftp willy@192.168.0.2`` sftp connection using username and server IP addr or domain name
+- ``ls`` will list files and directories in the directory you are in on the _remote_
+- ``lls`` will list _local_ files and directories of the directory you are in
+- ``put names.txt`` will upload the local file ``names.txt`` to the remote host
+- ``get remotefile.txt`` will download a file on the remote host to your local machine
+
+## 15
