@@ -14,6 +14,7 @@
 12. [ Linus hosts file ](#12-linux-hosts-file)
 13. [ SSH ](#13-ssh)
 14. [ SFTP ](#14-sftp)
+15. [ Man command ](#15-man)
 
 ## 1 sudo
 
