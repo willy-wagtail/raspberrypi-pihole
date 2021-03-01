@@ -333,6 +333,16 @@ Secure shell remotely connects to a host
 
 When done, type ``exit`` to close connection
 
+Setting up ssh server:
+- ``sudo apt install openssh-server`` installs openssh-server
+- ``sudo nano /etc/ssh/sshd_config`` open the ssh config file
+  - can change the default port from 22 to, say, 2212
+  - under authentication, can set ``PermitRootLogin no``to stop anyone logging in as root
+  - add a line ``AllowUsers willy``. 
+    - this takes a list of users separated by a space. 
+    - this specifies which users are allowed ssh into this server
+  - ``sudo systemctl restart ssh`` to restart the ssh process
+
 ## 14 SFTP
 
 FTP = file transfer protocol.
@@ -350,4 +360,9 @@ SFTP = secure file transfer protocol
 - ``put names.txt`` will upload the local file ``names.txt`` to the remote host
 - ``get remotefile.txt`` will download a file on the remote host to your local machine
 
-## 15
+## 15 Man command
+
+To find out more info about a command in linux, use ``man``.
+- ``man ssh`` find out about ssh command
+- ``q`` to quit
+- e.g. ``man chromium-browser``, ``man nmap``, ... etc
