@@ -279,4 +279,126 @@ For the most part, applications sit on top of file systems.
 
 ### 2.2 Creating filesystems
 
+To see list of kernel supported fs, ``cat /proc/filesystems``
+- the ones with ``nodev`` in first column is not currently in use.
+
+``fdisk -l /dev/dsc`` - check if it has partition (nope!)
+- ``fdisk /dev/sdc`` - to create one
+- ``n`` for new partition
+- ``p`` for primary partition
+- ``1`` for partition number
+- default
+- ``p`` to print and double check
+- ``w`` to commit
+
+``mke2fs -t ext4 -n /dev/sdc1`` write filesystem ext in partition
+- ``t`` option means type
+- ``n`` option means do a dry run without actually going ahead
+- default no label, 
+- block size 4096 bytes, which system decides automatically. can specify with ``b`` option
+- 196608 inodes - files can be written into filesystem, can specify with ``I`` option
+- superblock locations
+
+``mke2fs -t ext4 -I 123456789 /dev/sdc/1``
+- fails, invalid inode size, can only be between 128 and 4096 bytes
+- mke2fs has validation to stop us doign silly stuff, but it doesnt stop everything
+
+``mke2fs -t ext4 /dev/sdc1``
+- the defaults are defined in ``etc/mke2fs.conf``
+- journaled filesystem is is one with a log to assist in recovery
+
+### 2.3 Manual mounting
+
+Mounting is like assigning the filesystem an address so it can be accessed. Can be done manually or automatically via configuration.
+
+``mkdir /testmount`` create a _mountpoint_ to mount it to.
+
+``mount -t ext4 /dev/sdc/1 /testmount`` command is used for manual mounting a drive to a mountpoint
+- ``t`` option is for filesystem type
+- ``mount -t xfs /dev/sdc1 /testmount`` will get a filesystem error as device is not xfs
+
+```mount -l -t ext4`` list all mounts of type ext4 to check it has worked
+- ``l`` option is for listing
+
+``cp -r /var/log /testmount`` copy all log files over to mountpoint
+- ``ls /testmount`` to see all the log files
+
+``umount /testmount`` to unmount 
+- we lose access to all the files we just copied
+- can specify mount point or device
+- cant unmount if it is in use, e.g. if our shell is in that location
+  - ``lsof /testmount`` to see processes using device
+  - ``fuser -cuv /testmount`` see users using /testmount
+    - ``c`` lists current dir
+- lazy umount using ``-l`` option which wil unmount when its no longer in use
+- ``ls /testmount`` to see there are no files there
+
+``mkdir -p /1/2/3/4/5/6`` create a new directory to use as mountpoint that already has a file in it!
+- ``touch ./tremendousfile``
+- ``echo 'yeeha' > ./tremendousfile``
+- ``cat ./tremendousfile``
+
+``mount -t ext4 /1/2/3/4/5/6``
+- ``ls /1/2/3/4/5/6`` - should see all the log files, but no sign of ``tremendousfile`` we just created
+- ``ls /1/2/3/4/5/6 | grep trem`` - see nothing
+
+``umount /1/2/3/4/5/6``
+- ``ls /1/2/3/4/5/6`` - and we can see our ``tremendousfile`` again!
+
+### 2.4 Mount options and automatic mounting
+
+Options to specify when mounting
+- discard option ``mount -t ext4 -o discard /dev/sdc1 /testmount``
+  - discard option makes filesystem thin provisioning aware. It adds some intell to the mounted filesystem so when we delete data, the storage subsystem (normally a shared storage array on the back-end) is told about the delete, so it can reclaim the deleted space and use it for the volumes. On backend storage array this keeps thin volume thin, allowing other volumes to use the space
+- ``mount -lt ext4`` to see the discard option
+
+Automatic mounting
+- ``umount /dev/sdc1`` - unmount
+- ``mount`` to see we have a clear system
+
+``vim etc/fstab``
+- add new line for mount entry ``/dev/sdc1   /testmount    ext4    ro,discard     0   0``
+  - device, mountpoint, filesystem, options, dumping, fscking
+  
+instead of ``/dev/sdc1``, better to specify with UUID found using below commands
+- ``bldid`` use block id command to get uuid
+- ``lsblk --fs`` to print devices and fs with uuid
+- replace ``/dev/sdc/1`` with ``UUID=<uuid>``
+
+We can now reboot to test automatic mounting.
+- instead of rebooting, we can just run ``mount -a``, which is just what rebooting does anyway
+- ``mount -lt ext4`` to see it mounted
+
+Now that it is in ``etc/fstab`` we can now just mount by specifying mountpoint or device 
+- ``mount /testmount`` or ``mount /dev/sdc1`` without specifying options. 
+- mount will check fstab for its options
+
+### 2.5 Superblocks and inodes
+
+Superblock contains metadata about the filesystem, structural information
+- Each unix system has at least one superblock. Most keep several copies in case of lose or corruption.
+- mounting or accessing any files requires the superblock
+- superblock kept in memory for fast access to mounted device
+
+``dumpe2fs /dev/sdc1 | less`` - to see the superblock metadata
+- ``dumpe2fs /dev/sdc1 | grep -i superblock``  - lists primary and backups superblock locations
+
+Inode = index node
+- many filesystems use inode
+- each object including a file has its own inode
+- contains metadata about the file or directory or object such as the stuff when we run ``ls -l`` except the filename and content
+- number of inodes have a direct bearing on the number of files we can create
+- ``ls -i`` to see the inode number of the file
+
+Labels
+- device file name can change eg /dev/sdc1 so we uuid
+- uuid are hard to read, so can use labels
+- ``blkid`` to see label 
+- ``e2label /dev/sdc1 "willy label"`` to set label
+  - ``blkid`` to check
+- ``mke2fs -t ext4 -L "willy label" /dev/sdc1`` - we can create a label when we make the filesystem as well using ``L`` option
+
+### 2.6 Removing and repairing filesystems
+
+
 
