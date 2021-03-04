@@ -138,7 +138,189 @@ all:
 ``ansible-inventory -y --list`` will display the current inventory in YAML format
 - easy way to convert INI files to YAML files
 
-````
+``ansible washington1.example.com --list-hosts`` - used to verify a machine's presence in the inventory
+- outputs ``hosts (1): washington1.example.com``
 
 
-8:10
+In this course, ansible control host running RHEL8, managing 2 web servers and two db servers.
+- ``vim /etc/ansible/ansible.cfg`` - default ansible config file
+  - you can see that the default inventory is configured in ``/etc/ansible/hosts`` file
+  - ``vim /etc/ansible/hosts``
+- ``vim inventory`` create own inventory file with basic entries for the 4 hosts
+  ```
+  [webservers]
+  web01
+  web02
+
+  [databases]
+  db[01:02]
+  ```
+- ``ansible-inventory -i inventory --list`` to list all hosts listed in ``inventory`` file in json format
+
+## 2 Connection settings and privilege escalation
+
+Ansible does not require you to install an agent on managed hosts.
+
+Protocols and software included with the OS are used: 
+- ssh and python on linux systems
+- other protocols for windows such as Windows remote management and powershell
+
+Advantages of using common well tested and understool tools.
+- simpler to prepare systems 
+- reduces security risks
+
+Ansible on the control node needs some information to successfully connect to managed hosts.
+- the location of the inventory file
+- the connection protocol to use (default ssh)
+- whether a non-standard network port is needed to connect to the server
+- what user it can login as
+- if the user is not root, whether ansible should escalate privileges to root
+- how ansible should become root (by default with ``sudo``)
+- whether to prompt for an ssh password to log in or a ``sudo`` password to gain privileges
+
+You can set default selections for this information in your Ansible configuration file, or passing flags on the command line during invocation.
+
+Ansible chooses its config from one of several locations, in order the given order
+- if ``ANSIBLE_CONFIG`` is set, its value is the path to the file
+- if environment variable is not set, Ansible will look for config in the following places
+  - ``./ansible.cfg`` in the current directory where you ran the ansible command
+  - ``~/.ansible.cfg`` as a dot file in the user's home directory
+  - ``/etc/ansible/ansible.cfg`` the default config
+
+``ansible --version`` clearly identifies which config file is currently being used
+- ``ansible-config --version`` can also get this info
+
+``ansible.cfg`` file
+- each section contains settings as key value pairs
+- section titles are closed in square brackets
+- basic operations use two sections:
+  - ``[defaults]`` sets defaults for Ansible operation
+  - ``[privilege_escalation]`` configures how Ansible performs privilege escalation on managed hosts
+
+Connect settings in config file is in ``[defaults]`` section
+- ``remote_user`` specified the user you want to use on the managed host
+  - if none specified, it uses your current user name
+- ``remote_port`` specifies which port sshd is using on the managed host
+  - if none specified, the default is port 22
+- ``ask_pass`` controls whether Ansible will prompt you for the ssh password
+  - by default it will NOT prompt for password, assuming you are using SSH key based auth
+
+In ``[privilege_escalation]`` section of config file
+- ``become`` controls whether you will auto use privilege escalation
+  - default is no, and can override this at the command line or in platbooks
+- ``become_user`` controls what user on the managed host Ansible should become
+  - default is root
+- ``become_method`` controls how Ansible will become that user
+  - default uses ``sudo``, there are other options like ``su``
+- ``become_ask_pass`` controls whether to prompt you for a password for your become method
+  - default is no
+
+The following is a typical ``ansible.cfg`` file
+```
+[defaults]
+inventory = /.inventory
+remote_user = ansible
+ask_pass = false
+
+[privilege_escalation]
+become = true
+become_user = root
+become_ask_pass = false
+```
+
+Host-based connection and privilege escalation variables variables
+
+You can apply settings specific to a particular host by setting connection variables
+- easiest is placing the settings in a file in the ``host_vars`` directory in the same directory as the inventory file
+  - e.g. see below file directory representation. there are two host-specific files for server1.example.com and server2.example.com
+  - the hosts should appear with those names in the inventory
+    ```
+    project
+      ansible.cfg
+      host_vars
+        server1.example.com
+        server2.example.com
+      inventory
+    ```
+- these settings override the ones in ``ansible.cfg``
+- they have slightly different syntax and naming
+
+- ``ansible_host`` specifies a diff IP or hostname to use for connection to this host instead of one in inventory
+- ``ansible_port`` specifies the port to use for the ssh connection on this host
+- ``ansible_user`` specifies whether to use privilege escalation
+- ``ansible_become`` specifies the user to become on this host
+- ``ansible_become_user`` specfies the user to become on this host
+- ``ansible_become_method`` specifies the privilege escalation method to use for this host
+
+Example of ``host_vars/server1.example.com``
+  ```
+  # connection variables for server1.example.com
+  ansible_host: 192.0.2.104
+  ansible_port: 34102
+  ansible_user: root
+  ansible_become: false
+  ```
+- these settings only affect ``server1.example.com`` in the inventory
+
+Preparation of the managed host
+- set up ssh key-based authentication to an unprovileged account that can use ``sudo`` to become root without password
+- advantage is that you can use an account that only ansible uses and tie that to a particular ssh private key, but still have passwordless authentication
+- alternatively, ssh key-based authentication to the unprivileged account, then require the ``sudo`` password for authentication to ``root``
+- ansible allows you to select the mix of settings that works best for your security policy and stance
+
+demo
+``vim /etc/ansible/ansible.cfg``
+  - search for ``become`` to find the area that deals with this
+  - you can see defaults in ``[privileged_escalation]`` section
+    - become default is true, method is sudo, user is root, and pass is false
+
+``vim ansible.cfg`` create our own custom ``ansible.cfg``
+```
+[defaults]
+inventory = /home/demo/ansible/inventory
+
+[privilege_escalation]
+become=True
+become_method=sudo
+become_user=root
+become_ask_pass=False
+```
+
+``ansible --version`` to check that ansible will use our custom config file
+
+``mkdir host_vars`` create a ``host_vars`` directory to contain our host connection settings
+- we will create one file per host to specify values that supplies values that override defaults
+- ``cd host_vars/``
+- ``vim db01``
+  ```
+  # host variables for the db01 system
+  ---
+  become_ask_pass: True
+  ```
+
+``ansible databases --limit db01 -m ping``
+- try running ansible on the databases inventory group, limited to db01 system
+- error, because i'm located in teh ``host_vars`` directory. need to go up one level
+- ``cd ..``
+- rerun ``ansible databases --limit db01 -m ping``
+
+``cd host_vars``
+- ``vim db01`` change file by adding line 
+  ```
+  # host variables for the db01 system
+  ---
+  become_ask_pass: True
+  custom_db_port: 1234
+  ```
+- ``cd ..``
+- ``ansible databases --limit db01 -m ping``
+
+``ansible-config dump --only-changed`` to check what we've overridden with our custom ansible.cfg
+
+After creating and populating our hosts with keys, we can actually just directly ssh into our hosts without supplying a password
+- ``ssh web01``
+- ``logout``
+
+## 3 Adhoc commands
+
+
