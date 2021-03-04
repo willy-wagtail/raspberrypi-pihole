@@ -1,7 +1,7 @@
 # Ansible notes
 
 1. [Inventory](#1-inventory)
-2. [Connection settings and privilege escalation](#1-connection-settings-and-privilege-escalation)
+2. [Connection settings and privilege escalation](#2-connection-settings-and-privilege-escalation)
 
 ## 1 Inventory
 
