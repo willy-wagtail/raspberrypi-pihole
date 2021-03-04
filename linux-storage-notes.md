@@ -2,6 +2,7 @@
 
 1. [Disks and partitions](#1-disks-and-partitions)
 2. [Filesystems](#2-filesystems)
+3. [Linux LVM fundamentals](#3-linux-lvm-fundamentals)
 
 ## 1 Disks and partitions
 
@@ -400,5 +401,64 @@ Labels
 
 ### 2.6 Removing and repairing filesystems
 
+Removing filesystem
+- delete partition or logical volume its on
+  - is a soft delete. if you recreate same partition with same start (and end point), likely you can still access the same data.
+  - doesnt go and actually delete the data when you delete partition
 
+When filesystem is not properly unmounted, a dirty unmount, e.g. by a system crash, or a drive unexpectedly went offline. 
+- system auto performs ``fsck`` - filesystem check command used to check and repair filesystems
+- can manually run on a device by typing ``fsck /dev/sdc1`` for example
+- it can only run against unmounted filesystems
 
+Demo
+- check unmounted ``mount -lt ext4``
+- ``fsck /dev/sdc1`` - can use label or uuid
+  - outputs ``clean``
+  - runs quickly here for small filesystem, but for large devices it can take a very long time - which can be a problem in production
+  - command is a frontend for ``e2fsck`` because it is ext filesystem
+  - ``-a`` auto fix without confirm 
+  - ``-V`` verbose mode
+    - ``fsck -aV /dev/sdc1``
+
+``df -ihT`` meaning disk free, shows info about filesystem used, as well as avialable space, and info about stuff like inodes
+- ``-h`` means human readable values
+- ``-i`` shows inode information too
+- ``-T`` shows filesystem type
+
+``du -hcs /etc`` tells us how much disk space a file or directory is using
+- ``-h`` means human readable
+- ``-s`` means summary
+
+## 3 Linux LVM fundamentals
+
+Linux Logical Volume Manager (LVM) takes physical volumes (PV), pools their capacity into volume groups (VG), and lets us carve out space in the volume groups into one or more logical volumes (LV). 
+- The logical volumes replace the physical hard drive that we used to work with, and is the layer we add filesystem to
+- VG and LV can easily be grown or shrunk by adding more PVs and allows us to work with a logical/virtual layer
+
+LVM is the standard volume manager in Linux, and ships with most versions of linux.
+
+### 3.1 Physical volumes
+
+PVs can be locally installed hard drives or shared storage devices, e.g. ``/dev/sdb`` with 200GB and ``/dev/sdc`` with 200GB
+- LVM takes these and combines into a VG ``/dev/vg01`` with 400GB
+- from within VG, can create multiple LVs, ``/dev/vg01/lv01``, ``/dev/vg01/lv02`` which looks and feels like a separate block device.
+
+LVM can work on the entire PV or partitions on it. 
+- can marks one device with at least one partition so it is marked as in use. 
+
+Demo
+``ls -l /dev | grep sd`` to see what drives we have on our machine
+- create on partition on the two drives 
+  - ``fdisk /dev/sdb``, then ``n``, then ``p``, then ``1``,  then ``p``, then ``w``.
+  - ``fdisk /dev/sdc``, then ``n``, then ``p``, then ``1``,  then ``p``, then ``w``.
+- ``partprobe``
+- ``ls -l /dev | grep sd`` to see drives and partitions
+
+Need to initialise the partition for use with LVM so they get recognised as PVs.
+- ``pvcreate /dev/sdb1``
+  - ``pvcreate`` command writes an LVM label (aka LVM header) to the device or partition, by default to the second sector of the device or partition
+  - the LVM label doesnt contain much info: a uuid, some size info, pointer to location on disk where rest of LVM metadata is held
+- ``pvcreate /dev/sdc1``
+
+### 3.2 LVM metadata
