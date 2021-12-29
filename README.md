@@ -24,7 +24,7 @@ https://www.raspberrypi.org/documentation/configuration/wireless/headless.md
 
 On another device, download and use the [Raspberry Pi Imager](https://www.raspberrypi.org/software/) to write the RaspberryPi OS image onto a micro-SD card. The Lite version does not include the desktop GUI, so use that if you are setting the raspberry pi up headless.
 
-To enable ssh, create empty file called `.ssh` at root level on your SD card before the first boot.
+To enable ssh, create empty file called `ssh` at root level on your SD card before the first boot.
 
 I personally use ethernet, but if you want to use wifi, you can automatically connect to a wifi network on the first boot by adding a `wpa_supplicant.conf` file at root level before first boot with the following:
 
