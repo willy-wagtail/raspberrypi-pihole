@@ -15,7 +15,7 @@
 
 On another device, download the [Raspberry Pi Imager](https://www.raspberrypi.com/documentation/computers/getting-started.html#using-raspberry-pi-imager). For a headless Raspberry Pi setup, choose to the RaspberryPi Lite OS image. The Lite version does not include the desktop GUI and many other apps in the full version. Select your SD card. 
 
-Before we write the OS image onto the SD card, go into te advanced menu cogwheel to create a new user. This will create a `userconf.txt` file in the boot partition of the SD card containing the username and encrypted password. (In the past, there was a default user `pi` with password `raspberry`; but this is no longer the case.) After this, we can write the image onto the SD card.
+Before we write the OS image onto the SD card, go into the advanced menu cogwheel to create a new user. This will create a `userconf.txt` file in the boot partition of the SD card containing the username and encrypted password. (In the past, there was a default user `pi` with password `raspberry`; but this is no longer the case.) After this, we can write the image onto the SD card.
 
 After using the imager and before the first boot, eject and reinsert your SD card so that we can enable ssh. Create an empty file called `ssh` at root level on your SD card.
 
