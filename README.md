@@ -15,34 +15,15 @@
 
 On another device, download the [Raspberry Pi Imager](https://www.raspberrypi.com/documentation/computers/getting-started.html#using-raspberry-pi-imager). For a headless Raspberry Pi setup, choose to the RaspberryPi Lite OS image. The Lite version does not include the desktop GUI and many other apps in the full version. Select your SD card. 
 
-Before we write the OS image onto the SD card, go into the advanced menu cogwheel to create a new user. This will create a `userconf.txt` file in the boot partition of the SD card containing the username and encrypted password. (In the past, there was a default user `pi` with password `raspberry`; but this is no longer the case.) After this, we can write the image onto the SD card.
+Before we write the OS image onto the SD card, go into the advanced menu cogwheel to create a new user and password: in the past, there was a default user `pi` with password `raspberry` - this is no longer the case for security reasons. Also in the advanced menus, enable SSH either using password authentication or by key-based authentication only by supplying a public key. I personally use an ethernet cable to connect it to the network, but you can also configure Wi-Fi here so that the Raspberry Pi will automatically connect to it on the first boot.
 
-After using the imager and before the first boot, eject and reinsert your SD card so that we can enable ssh. Create an empty file called `ssh` at root level on your SD card.
-
-I personally use ethernet, but if you want to use wifi, you can automatically connect to a wifi network on the first boot by adding a `wpa_supplicant.conf` file at root level before first boot with the following:
-
-```
-ctrl_interface=DIR=/var/run/wpa_supplicant GROUP=netdev
-update_config=1
-country=<Insert 2 letter ISO 3166-1 country code here>
-
-network={
- ssid="<Name of your wireless LAN>"
- psk="<Password for your wireless LAN>"
-}
-```
+Now, we can write the Raspberry Pi OS image onto the SD card.
 
 ### First boot
 
-Put the micro-SD card into the raspberrypi and power it on.
+Put the micro-SD card into the Raspberry Pi and then power it on.
 
-Wait a little for it to start up, then you can ssh into the raspberry pi using the default username "pi" and password "raspberry". Use your router or another network analyser tool (like Fing app) to find the IP address of the pi and run this command `ssh pi@<IP address>`.
-
-### Change hostname
-
-You can optionally change the hostname of your device as follows. Run `sudo raspi-config` then go to "System Options", then "Hostname". You can then type in your new hostname and reboot.
-
-Alternatively, run `sudo nano /etc/hosts`, change the old raspberry pi hostname to your new one, save and exit by hitting Ctrl-X and the "Y" for yes. Then run `sudo nano /etc/hostname`, change the hostname there to the new one, save and exit. Finally reboot by running `sudo reboot`.
+Wait a little for it to start up, then use your router or another network analyser tool (like Fing app) to find the IP address of the Raspberry Pi. Then ssh into it by running this command `ssh <username>@<IP address>`.
 
 ### Correctly shutting down the Raspberry Pi
 
@@ -52,15 +33,11 @@ When you want to shut down the pi, pulling power cord without properly shutting 
 
 To start the Raspberry pi back up, simply turn on the power.
 
-There are ways to create a power button using the GPIO pins on the board. // TODO: explore this
-
 ### Power Consumption Tweaks
 
 If you are running a headless Raspberry Pi, then according to [this blog by Jeff Geering](https://www.jeffgeerling.com/blogs/jeff-geerling/raspberry-pi-zero-conserve-energy), you can save a little bit of power by disabling the HDMI display circuitry.
 
-Run the command `/usr/bin/tvservice -o` to disable HDMI. Also run `sudo nano /etc/rc.local` and add the command there too in order to disable HDMI on boot.
-
-(To enable again, run `/usr/bin/tvservice -p`, and remove from `/etc/rc.local`).
+Run the command `/usr/bin/tvservice -o` to disable HDMI. Also run `sudo nano /etc/rc.local` and add the command there too in order to disable HDMI on boot. (To enable again, run `/usr/bin/tvservice -p`, and remove from `/etc/rc.local`).
 
 <a name="securingpi"></a>
 
