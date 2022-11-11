@@ -217,7 +217,7 @@ https://github.com/chriscrowe/docker-pihole-unbound
 https://github.com/anudeepND/whitelist  
 https://discourse.pi-hole.net/t/solved-dns-resolution-is-currently-unavailable/33725/3
 
-### Start Pihole in container
+### Option 1 - Start Pihole in container
 
 > _Go to the next section if you want to start Pihole with Unbound. This is for starting Pihole only in a docker container._
 
@@ -227,7 +227,7 @@ Optionally uncomment the environment property `WEBPASSWORD` and point it to an e
 
 In the directory where the `docker-compose.yml` is in, run `docker-compose up -d`. You can find the newly created container's id by running `docker ps -a`. Using the container id, you can use it to tail the logs as it starts up using `docker logs -f <docker container id>`.
 
-### Start Pihole and Unbound in a single container
+### Option 2 - Start Pihole and Unbound in a single container
 
 Clone this git repository by running `git clone https://github.com/willypapa/raspberrypi.git`. It will clone the files into `/raspberrypi` directory. Change directory to `cd docker-pihole-unbound`. Follow the `README.md` in this directory.
 
