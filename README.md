@@ -215,59 +215,15 @@ https://github.com/chriscrowe/docker-pihole-unbound
 https://github.com/anudeepND/whitelist  
 https://discourse.pi-hole.net/t/solved-dns-resolution-is-currently-unavailable/33725/3
 
-### Option 1 - Start Pihole in container
-
-> _Go to the next section if you want to start Pihole with Unbound. This is for starting Pihole only in a docker container._
-
-Using the `docker-compose.yaml` file from https://hub.docker.com/r/pihole/pihole/ as reference, create the file by running `touch docker-compose.yml`, then `sudo nano docker-compose.yml` to open the file in an editor, and finally copy pasting the contents in.
-
-Optionally uncomment the environment property `WEBPASSWORD` and point it to an environment variable - i.e. `WEBPASSWORD: $PIHOLE_PASSWORD`. (Note that if we don't give it a password, a random one will be generated which you can find in the pihole startup logs). Now Pihole's web UI password will be set to whatever the environment variable `$PIHOLE_PASSWORD` is. You can set this environment variable on the pi by running: `export PIHOLE_PASSWORD=’<password>’`. A more permanent alternative is to create a file in the same directory as the docker-compose.yml file called `.env` by running `touch .env`, then go into the file using an editor by running `sudo nano .env` and add your environment variables - e.g. `PIHOLE_PASSWORD=password`.
-
-In the directory where the `docker-compose.yml` is in, run `docker-compose up -d`. You can find the newly created container's id by running `docker ps -a`. Using the container id, you can use it to tail the logs as it starts up using `docker logs -f <docker container id>`.
-
-### Option 2 - Start Pihole and Unbound in a single container
+### Start Pihole and Unbound in a single container
 
 Clone this git repository by running `git clone https://github.com/willypapa/raspberrypi-pihole-unbound-docker.git`. It will clone the files into `/raspberrypi-pihole-unbound-docker` directory. Change directory to `cd docker-pihole-unbound`. Follow the `README.md` in that directory.
-
-### Whitelist common false-positives
-
-This is optional. Ths [github repo](https://github.com/anudeepND/whitelist.git) keeps a list of common false-positive domains for us to whitelist.
-
-The whitelist is installed using a python script. However, the pihole/pihole docker image does not include a python installation. So we have to run the following on the host raspberry pi itself which should have python3 installed.
-
-Run `git clone https://github.com/anudeepND/whitelist.git`, then `sudo python3 whitelist/scripts/whitelist.py --dir <path to /etc-pihole/ volume> --docker`
-
-### Change Your Router's DNS Server
-
-Log onto your home network's router (usually device 1 on your subnet - e.g. 192.168.0.1), and change the default DNS server to be the IP address of the raspberry pi running pihole. Instructions on how to do this will vary depending on your router.
-
-### Verify that it works
-
-Use this [ad blocker test](https://ads-blocker.com/testing/).
-
-### Stopping the container
-
-To stop the pihole-unbound container, go to the directory with the docker-compose.yml file and run `docker-compose down`.
-
-### Updating Pihole-Unbound
-
-When there is a new version available for pihole, you can update by first stopping the container by running `docker-compose down`, then rebuild and restart the docker container with `docker-compose up --build -d`. The build flag forces it to rebuild the image first which will pull the latest official pihole docker image.
-
-### Set up VPN Server
-
-Set up a OpenVPN or WireGuard VPN server so that your devices away from home can browse the internet through your locally hosted Pihole. See https://docs.pi-hole.net/guides/vpn/openvpn/overview/.
-
-My router supports OpenVPN so I managed to set one up using that. Otherwise you could consider using PiVPN to setup a Wireguard or OpenVPN server on your raspberry pi. See [PiVPN](https://www.pivpn.io/) and [their docs](https://docs.pivpn.io/).
-
-### Troubleshooting: DNS resolution is currently unavailable
-
-I encountered [this issue](https://discourse.pi-hole.net/t/solved-dns-resolution-is-currently-unavailable/33725) a couple of times. When starting the pihole-unbound docker container, I see in the logs that the "DNS resolution is currently unavailable".
-
-I followed the instructions in (this comment)[https://discourse.pi-hole.net/t/solved-dns-resolution-is-currently-unavailable/33725/7] which appeared to solve it. This changes the nameserver in the `resolv.conf` within the container from `127.0.0.11` to `127.0.0.1`.
 
 <a name="log2ram"></a>
 
 # Log2Ram
+
+Note: [This step isn't really needed for a Raspberry Pi running Pihole](https://www.reddit.com/r/pihole/comments/ltiet8/comment/goygick/). I'm just keeping the notes here for the record.
 
 ### Sources
 
@@ -276,8 +232,6 @@ https://levelup.gitconnected.com/extend-the-lifespan-of-your-raspberry-pis-sd-ca
 https://www.geekbitzone.com/posts/log2ram/log2ram-raspberry-pi/
 
 ### Purpose
-
-Note: [This step isn't really needed for a Raspberry Pi running Pihole](https://www.reddit.com/r/pihole/comments/ltiet8/comment/goygick/). I'm just keeping notes here for the record.
 
 Log2ram is software that redirects logs to memory instead of the micro-SD card, only writing to the micro-SD card at set intervals or during system shutdown. By default, the interval is once a day. This supposedly extends the lifespan of micro-SD cards by reducing the number of writes to disk.
 
