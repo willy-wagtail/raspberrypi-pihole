@@ -11,18 +11,13 @@
 
 # Setting Up Raspberry Pi
 
-### Sources
-
-https://www.raspberrypi.org/software/  
-https://www.raspberrypi.org/documentation/installation/installing-images/README.md  
-https://www.raspberrypi.org/documentation/remote-access/ssh/README.md  
-https://www.raspberrypi.org/documentation/configuration/wireless/headless.md
-
 ### Preparing SD Card
 
-On another device, download and use the [Raspberry Pi Imager](https://www.raspberrypi.org/software/) to write the RaspberryPi OS image onto a micro-SD card. The Lite version does not include the desktop GUI, so use that if you are setting the raspberry pi up headless.
+On another device, download the [Raspberry Pi Imager](https://www.raspberrypi.com/documentation/computers/getting-started.html#using-raspberry-pi-imager). For a headless Raspberry Pi setup, choose to the RaspberryPi Lite OS image. The Lite version does not include the desktop GUI and many other apps in the full version. Select your SD card. 
 
-To enable ssh, create empty file called `ssh` at root level on your SD card before the first boot.
+Before we write the OS image onto the SD card, go into te advanced menu cogwheel to create a new user. This will create a `userconf.txt` file in the boot partition of the SD card containing the username and encrypted password. (In the past, there was a default user `pi` with password `raspberry`; but this is no longer the case.) After this, we can write the image onto the SD card.
+
+After using the imager and before the first boot, eject and reinsert your SD card so that we can enable ssh. Create an empty file called `ssh` at root level on your SD card.
 
 I personally use ethernet, but if you want to use wifi, you can automatically connect to a wifi network on the first boot by adding a `wpa_supplicant.conf` file at root level before first boot with the following:
 
