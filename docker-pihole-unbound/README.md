@@ -53,6 +53,12 @@ On your home network's router, change the default DNS server to point to the IP 
 
 Verify that advert blocking works using this [ad-blocker test](https://ads-blocker.com/testing/).
 
+### 1.5 Troubleshooting - DNS resolution is currently unavailable
+
+I encountered [this issue](https://discourse.pi-hole.net/t/solved-dns-resolution-is-currently-unavailable/33725) a couple of times. When starting the pihole-unbound docker container, I see in the logs that the "DNS resolution is currently unavailable".
+
+I followed the instructions in (this comment)[https://discourse.pi-hole.net/t/solved-dns-resolution-is-currently-unavailable/33725/7] which appeared to solve it. This changes the nameserver in the `resolv.conf` within the container from `127.0.0.11` to `127.0.0.1`.
+
 ## 2 Teardown
 
 Stop pihole-unbound docker container
