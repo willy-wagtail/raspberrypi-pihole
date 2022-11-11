@@ -277,7 +277,7 @@ https://www.geekbitzone.com/posts/log2ram/log2ram-raspberry-pi/
 
 ### Purpose
 
-Note: (This step isn't really needed for a Raspberry Pi running Pihole)[https://www.reddit.com/r/pihole/comments/ltiet8/comment/goygick/?utm_source=share&utm_medium=web2x&context=3]. I'm just keeping notes here for the record.
+Note: [This step isn't really needed for a Raspberry Pi running Pihole](https://www.reddit.com/r/pihole/comments/ltiet8/comment/goygick/). I'm just keeping notes here for the record.
 
 Log2ram is software that redirects logs to memory instead of the micro-SD card, only writing to the micro-SD card at set intervals or during system shutdown. By default, the interval is once a day. This supposedly extends the lifespan of micro-SD cards by reducing the number of writes to disk.
 
