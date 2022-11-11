@@ -36,7 +36,7 @@ When you want to shut down the pi, pulling power cord without properly shutting 
 
 To start the Raspberry pi back up, simply turn on the power.
 
-### Power Consumption Tweaks
+### Optional minor power consumption tweaks
 
 If you are running a headless Raspberry Pi, then according to [this blog by Jeff Geering](https://www.jeffgeerling.com/blogs/jeff-geerling/raspberry-pi-zero-conserve-energy), you can save a little bit of power by disabling the HDMI display circuitry.
 
