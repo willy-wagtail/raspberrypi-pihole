@@ -11,7 +11,7 @@ Create environment variables referenced in the `docker-compose.yml` file:
   TZ=Europe/London
   WEBPASSWORD=<password Pihole for web UI>
   REV_SERVER=true
-  REV_SERVER_DOMAIN=local
+  REV_SERVER_DOMAIN=<Router's DCHP Domain name e.g local>
   REV_SERVER_TARGET=<Router's IP, e.g. 192.168.1.1>
   REV_SERVER_CIDR=192.168.0.0/24
   HOSTNAME=pihole
