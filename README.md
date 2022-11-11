@@ -5,7 +5,6 @@
 3. [ Installing Git ](#installinggit)
 4. [ Installing Docker and Docker Compose ](#installingdocker)
 5. [ Pihole and Unbound with Docker Compose ](#piholeandunboundwithdockercompose)
-6. [ Log2Ram ](#log2ram)
 
 <a name="setuppi"></a>
 
@@ -15,9 +14,13 @@
 
 On another device, download the [Raspberry Pi Imager](https://www.raspberrypi.com/documentation/computers/getting-started.html#using-raspberry-pi-imager). For a headless Raspberry Pi setup, choose the latest RaspberryPi Lite OS image. The Lite version does not include the desktop GUI and many other apps in the full version. Select your SD card. 
 
-Before we write the OS image onto the SD card, go into the advanced menu cogwheel to create a new user and password: in the past, there was a default user `pi` with password `raspberry` - this is no longer the case for security reasons. Also in the advanced menus, enable SSH either using password authentication or by key-based authentication only by supplying a public key. I personally use an ethernet cable to connect it to the network, but you can also configure Wi-Fi here so that the Raspberry Pi will automatically connect to it on the first boot.
+Before we write the OS image onto the SD card, go into the advanced menu cogwheel to create a new user and password. In the past, there was a default user `pi` with password `raspberry`, but this is no longer the case for security reasons. 
 
-Now, we can write the Raspberry Pi OS image onto the SD card.
+Also in the advanced menus, enable SSH either using password authentication or by key-based authentication only by supplying a public key. 
+
+I personally use an ethernet cable to connect it to the network, but you can also configure Wi-Fi here so that the Raspberry Pi will automatically connect to it on the first boot.
+
+With the advanced options set, we can now write the Raspberry Pi OS image onto the SD card.
 
 ### First boot
 
@@ -190,44 +193,3 @@ https://discourse.pi-hole.net/t/solved-dns-resolution-is-currently-unavailable/3
 ### Start Pihole and Unbound in a single container
 
 Clone this git repository by running `git clone https://github.com/willypapa/raspberrypi-pihole-unbound-docker.git`. It will clone the files into `/raspberrypi-pihole-unbound-docker` directory. Change directory to `cd docker-pihole-unbound`. Follow the `README.md` in that directory.
-
-<a name="log2ram"></a>
-
-# Log2Ram
-
-Note: [This step isn't really needed for a Raspberry Pi running Pihole](https://www.reddit.com/r/pihole/comments/ltiet8/comment/goygick/). I'm just keeping the notes here for the record.
-
-### Sources
-
-https://github.com/azlux/log2ram  
-https://levelup.gitconnected.com/extend-the-lifespan-of-your-raspberry-pis-sd-card-with-log2ram-5929bf3316f2  
-https://www.geekbitzone.com/posts/log2ram/log2ram-raspberry-pi/
-
-### Purpose
-
-Log2ram is software that redirects logs to memory instead of the micro-SD card, only writing to the micro-SD card at set intervals or during system shutdown. By default, the interval is once a day. This supposedly extends the lifespan of micro-SD cards by reducing the number of writes to disk.
-
-> If you use Docker on your Raspberry Pi, note that each container has its logs written inside their respective containers rather than `/var/log`, so won't benefit from log2ram.
->
-> I've yet to explore a way to map them to /var/log to get benefit from log2ram (e.g. as suggested in [this github issue](https://github.com/gcgarner/IOTstack/issues/8)).
-
-### Installing Log2Ram
-
-Add Log2Ram repository to our apt sources list, `echo "deb http://packages.azlux.fr/debian/ buster main" | sudo tee /etc/apt/sources.list.d/azlux.list`.
-
-Download the public key to allow us to install Log2Ram, `wget -qO - https://azlux.fr/repo.gpg.key | sudo apt-key add -`.
-
-Update your apt packages, `sudo apt update`, then install log2ram, `sudo apt install log2ram`.
-
-Reboot once installed, `sudo reboot`.
-
-### Verify that it works
-
-After reboot, check that log2ram is mounted on `/var/log` by runninng `df -h`.
-
-Also verify that log2ram is mounted to `/var/log` by running `mount`.
-
-### Uninstall
-
-To uninstall, run `sudo apt remove log2ram --purge`. The purge option removes the config files as well. Using the verify steps above, check that log2ram has unmounted.
-
