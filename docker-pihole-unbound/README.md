@@ -49,11 +49,16 @@ Add whitelist of common false-positives (optional)
 - `cd ~/Documents/pihole-whitelist/`
 - `sudo python3 ./scripts/whitelist.py --dir ~/.pihole-unbound/etc-pihole/ --docker`
 
-On your home network's router, change the default DNS server to point to the IP address of the pihole-unbound host.
+
+### 1.5 Change your router's DNS
+
+On your home network's router, change the default DNS server to point to the IP address of the pihole-unbound host. How this is done depends on your router.
+
+My router is an Asus so I followed [these instructions](https://www.asus.com/support/FAQ/1046062).
 
 Verify that advert blocking works using this [ad-blocker test](https://ads-blocker.com/testing/).
 
-### 1.5 Troubleshooting - DNS resolution is currently unavailable
+### 1.6 Troubleshooting - DNS resolution is currently unavailable
 
 I encountered [this issue](https://discourse.pi-hole.net/t/solved-dns-resolution-is-currently-unavailable/33725) a couple of times. When starting the pihole-unbound docker container, I see in the logs that the "DNS resolution is currently unavailable".
 
