@@ -6,19 +6,28 @@ services:
     build: .
     container_name: pihole-unbound
     image: pihole-unbound:latest
+    hostname: ${HOSTNAME}
+    domainname: ${DOMAIN_NAME}
     ports:
-      - "${PIHOLE_ServerIP}:53:53/tcp"
-      - "${PIHOLE_ServerIP}:53:53/udp"
-      - "67:67/udp"
-      - "80:80/tcp"
-      - "443:443/tcp"
+      - 53:53/tcp
+      - 53:53/udp
+      - 67:67/udp
+      - 443:443/tcp
+      - ${PIHOLE_WEBPORT:-80}:80/tcp # Allows use of different port to access pihole web interface when other docker containers use port 80
+      # - 5335:5335/tcp # Uncomment to enable unbound access on local server
+      # - 22/tcp # Uncomment to enable SSH
     environment:
-      ServerIP: $PIHOLE_ServerIP
-      TZ: $PIHOLE_TIMEZONE
-      WEBPASSWORD: $PIHOLE_PASSWORD
-      DNS1: 127.0.0.1#5335
-      DNS2: 127.0.0.1#5335
+      FTLCONF_LOCAL_IPV4: $PIHOLE_ServerIP
+      TZ: ${TZ:-UTC}
+      WEBPASSWORD: $WEBPASSWORD
+      WEBTHEME: ${WEBTHEME:-default-light}
+      REV_SERVER: ${REV_SERVER:-false}
+      REV_SERVER_TARGET: ${REV_SERVER_TARGET}
+      REV_SERVER_DOMAIN: ${REV_SERVER_DOMAIN}
+      REV_SERVER_CIDR: ${REV_SERVER_CIDR}
+      PIHOLE_DNS_: 127.0.0.1#5335
       DNSSEC: "true"
+      DNSMASQ_LISTENING: single
     # Volumes store your data between container upgrades
     volumes:
       - ~/.pihole-unbound/etc-pihole/:/etc/pihole:rw
@@ -28,3 +37,5 @@ services:
     cap_add:
       - NET_ADMIN
     restart: unless-stopped
+
+

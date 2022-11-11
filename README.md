@@ -210,10 +210,9 @@ Reboot the pi by running `sudo reboot`.
 
 ### Sources
 
-https://docs.pi-hole.net/  
 https://hub.docker.com/r/pihole/pihole/  
 https://github.com/pi-hole/docker-pi-hole  
-https://docs.pi-hole.net/guides/unbound/  
+https://docs.pi-hole.net/guides/dns/unbound/
 https://github.com/chriscrowe/docker-pihole-unbound  
 https://github.com/anudeepND/whitelist  
 https://discourse.pi-hole.net/t/solved-dns-resolution-is-currently-unavailable/33725/3
@@ -224,29 +223,13 @@ https://discourse.pi-hole.net/t/solved-dns-resolution-is-currently-unavailable/3
 
 Using the `docker-compose.yaml` file from https://hub.docker.com/r/pihole/pihole/ as reference, create the file by running `touch docker-compose.yml`, then `sudo nano docker-compose.yml` to open the file in an editor, and finally copy pasting the contents in.
 
-Edit the file to uncomment the environment property `WEBPASSWORD` and point it to an environment variable - i.e. `WEBPASSWORD: $PIHOLE_PASSWORD`. Note that if we don't give it a password, a random one will be generated which you can find in the pihole startup logs.
-
-Now pihole's web UI password will be set to whatever the environment variable `$PIHOLE_PASSWORD` is. You can set it on the pi by running: `export PIHOLE_PASSWORD=’<password>’`. A more permanent alternative is to create a file in the same directory as the docker-compose.yml file called `.env` by running `touch .env`, then go into the file using an editor by running `sudo nano .env` and add your environment variables - e.g. `PIHOLE_PASSWORD=password`.
+Optionally uncomment the environment property `WEBPASSWORD` and point it to an environment variable - i.e. `WEBPASSWORD: $PIHOLE_PASSWORD`. (Note that if we don't give it a password, a random one will be generated which you can find in the pihole startup logs). Now Pihole's web UI password will be set to whatever the environment variable `$PIHOLE_PASSWORD` is. You can set this environment variable on the pi by running: `export PIHOLE_PASSWORD=’<password>’`. A more permanent alternative is to create a file in the same directory as the docker-compose.yml file called `.env` by running `touch .env`, then go into the file using an editor by running `sudo nano .env` and add your environment variables - e.g. `PIHOLE_PASSWORD=password`.
 
 In the directory where the `docker-compose.yml` is in, run `docker-compose up -d`. You can find the newly created container's id by running `docker ps -a`. Using the container id, you can use it to tail the logs as it starts up using `docker logs -f <docker container id>`.
 
 ### Start Pihole and Unbound in a single container
 
-Clone this git repository by running `git clone https://github.com/willypapa/raspberrypi.git`. It will clone the files into `/raspberrypi` directory. Change directory to `cd docker-pihole-unbound` to find the `docker-compose.yml` file. We will now refer to the `pihole-unbound` service in this `docker-compose.yml` file.
-
-In the directory where the `docker-compose.yml` is (i.e. `/raspberrypi/docker-pihole-unbound`), create a `.env` file by running `sudo nano .env`, then populate it with the environment variables that follows, changing the values to match your needs. These are referred to within the docker-compose.yml file.
-
-```
-PIHOLE_PASSWORD=password
-PIHOLE_TIMEZONE=Europe/London
-PIHOLE_ServerIP=<IP address of the host raspberry pi - e.g. 192.168.0.2>
-```
-
-Run `docker-compose up -d` to build and start the pihole-unbound container. You can find new container's id by running `docker ps -a`. Using the container id, you can use it to tail the logs as it starts up using `docker logs -f <docker container id>`.
-
-To test unbound is working, access the bash terminal in the docker container by running `docker exec -it <container-id-of-pihole-unbound> bash`. Once in, run these two commands to test DNSSEC validation: `dig sigfail.verteiltesysteme.net @127.0.0.1 -p 5335` and `dig sigok.verteiltesysteme.net @127.0.0.1 -p 5335`. The first should give a status report of `SERVFAIL` and no IP address. The second should give `NOERROR` plus an IP address. See pihole's unbound docs for more info.
-
-To confirm Pihole is up and pointing to unbound dns server, go to the local IP address of the host raspberry pi, e.g 192.168.0.2. You should see the Pihole dashboard at `<192.168.0.2>/admin`. Log in using the password set in the environment variable `$PIHOLE_PASSWORD`. Go to "Settings" and under the "DNS" tab, check that it is pointing to `127.0.0.1#5335` - which is the port we configured the unbound DNS server to listen to (see the `/docker-pihole-unbound/unbound-pihole.conf` file).
+Clone this git repository by running `git clone https://github.com/willypapa/raspberrypi.git`. It will clone the files into `/raspberrypi` directory. Change directory to `cd docker-pihole-unbound`. Follow the `README.md` in this directory.
 
 ### Whitelist common false-positives
 
