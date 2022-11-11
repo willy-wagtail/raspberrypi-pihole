@@ -54,7 +54,7 @@ Add whitelist of common false-positives (optional)
 
 On your home network's router, change the default DNS server to point to the IP address of the pihole-unbound host. How this is done depends on your router.
 
-My router is an Asus so I followed [these instructions](https://www.asus.com/support/FAQ/1046062).
+On Asus router, you can set the DNS on the WAN settings or LAN settings. Summary of discussions [here](https://discourse.pi-hole.net/t/configuring-dns-server-lan-or-wan-settings-on-asus-router/43523/17).
 
 Verify that advert blocking works using this [ad-blocker test](https://ads-blocker.com/testing/).
 
