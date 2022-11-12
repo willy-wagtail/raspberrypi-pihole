@@ -94,7 +94,7 @@ Allow or deny specific users by altering the sshd configuration:
 
 #### Set up public-private key
 
-See [here](https://www.raspberrypi.com/documentation/computers/configuration.html#using-key-based-authentication).
+See https://www.raspberrypi.com/documentation/computers/configuration.html#using-key-based-authentication.
 
 #### Disable password authentication
 
@@ -106,6 +106,20 @@ See [here](https://www.raspberrypi.com/documentation/computers/configuration.htm
   UsePAM no
   ```
 - Reload ssh `sudo service ssh reload`
+
+## [Fail2Ban](https://www.raspberrypi.com/documentation/computers/configuration.html#installing-fail2ban)
+
+- Run `sudo apt install fail2ban`
+- Copy `jail.conf` to `jail.local` to enable it: `sudo cp /etc/fail2ban/jail.conf /etc/fail2ban/jail.local`
+- Add following config to jail.local file: `sudo nano /etc/fail2ban/jail.local`
+  ```
+  [ssh]
+  enabled  = true
+  port     = ssh
+  filter   = sshd
+  logpath  = /var/log/auth.log
+  maxretry = 6
+  ```
 
 ## Kill unnecessary system services
 
