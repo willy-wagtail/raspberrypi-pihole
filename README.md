@@ -73,14 +73,38 @@ We could delete the pi accound instead of locking it, but some software may stil
 - Run `sudo apt full-upgrade -y`
 - Run `sudo apt clean` to clean up the downloaded package files.
 
-### Daily SSH updates
+## [Improving SSH](https://www.raspberrypi.com/documentation/computers/configuration.html#improving-ssh-security)
+
+### Update SSH
 
 Automatically update ssh everyday at midnight:
 
 - Run `sudo crontab -e`
 - Add this to bottom of file: `0 0 * * * apt install openssh-server`
 
-apt install openssh-server
+### Restrict ssh users 
+
+Allow or deny specific users by altering the sshd configuration:
+
+- Run `sudo nano /etc/ssh/sshd_config` to open config
+- Allow users to ssh like this, `AllowUsers alice bob`, or deny users to ssh like this, `DenyUsers jane john`
+- Restart SSH by running`sudo systemctl restart ssh`
+
+## Use key-based authentication
+
+### Set up public-private key
+
+See [here](sudo systemctl restart ssh).
+
+### Disable password authentication
+
+- Run `sudo nano /etc/ssh/sshd_config`
+- Change the following properties to `no`:
+  ```
+  ChallengeResponseAuthentication no
+  PasswordAuthentication no
+  UsePAM no
+  ```
 
 ### Kill unnecessary system services
 
