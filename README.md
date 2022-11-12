@@ -155,6 +155,12 @@ If not installed:
 - Re-log user `logout`
 - Check usergroup `grep '<username>' /etc/group`
 
+## [Start Docker on boot](https://docs.docker.com/engine/install/linux-postinstall/#configure-docker-to-start-on-boot-with-systemd)
+
+- Run `sudo systemctl enable docker.service`
+- Run `sudo systemctl enable containerd.service`
+- Run `sudo reboot` to restart system
+
 ## Verify docker installation
 
 - Check that your user can run a docker container by running the hello-world container, `docker run hello-world`. 
