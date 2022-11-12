@@ -90,13 +90,13 @@ Allow or deny specific users by altering the sshd configuration:
 - At the bottom, allow users to ssh like this, `AllowUsers alice bob`, or deny users to ssh like this, `DenyUsers jane john`
 - Restart SSH by running`sudo systemctl restart ssh`
 
-## Use key-based authentication
+### Use key-based authentication
 
-### Set up public-private key
+#### Set up public-private key
 
 See [here](https://www.raspberrypi.com/documentation/computers/configuration.html#using-key-based-authentication).
 
-### Disable password authentication
+#### Disable password authentication
 
 - Run `sudo nano /etc/ssh/sshd_config`
 - Change the following properties to `no`:
@@ -107,7 +107,7 @@ See [here](https://www.raspberrypi.com/documentation/computers/configuration.htm
   ```
 - Reload ssh `sudo service ssh reload`
 
-### Kill unnecessary system services
+## Kill unnecessary system services
 
 To reduce idling power usage, and also reduce the areas for compromise, we can list all running services and disable services you don't need - e.g. wifi, bluetooth or sound card drivers.
 
@@ -116,31 +116,6 @@ To see all active services, run `sudo systemctl --type=service --state=active`.
 To disable the wifi service or the bluetooth service now, run `sudo systemctl disable --now wpa_supplicant.service` or `sudo systemctl disable --now bluetooth.service` respectively.
 
 If you wanted to enable a service again, run `sudo systemctl enable --now bluetooth.service`.
-
-### Restrict ssh accounts
-
-Run `sudoedit /etc/ssh/sshd_config`.
-
-Under the line “# Authentication”, add `AllowUsers <account_name1> <account_name2>`.
-
-After the change, you will need to restart the sshd service using `sudo systemctl restart ssh` or rebooting.
-
-### Firewall
-
-Use ufw (uncomplicated firewall). Need to be careful not to lock yourself out. See links to rasp pi doc and YouTube video above.
-
-### Brute-force detection
-
-Use fail2ban which watchs system logs for repeated login attempts and add a firewall rule to prevent further access for a specified time. See links to rasp pi doc and YouTube video above.
-
-### Automatic package update and upgrade
-
-Not for production because of potential compatibility problems that may arise.
-
-Use unattended-upgrades with raspberry pi specific config.
-Alternatively, set up a cron job to run the update/upgrade commands.
-
-See link to YouTube video above for more details.
 
 <a name="installinggit"></a>
 
