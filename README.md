@@ -162,6 +162,9 @@ If not installed:
 
 ## [Install Compose](https://docs.docker.com/compose/install/other/#on-linux)
 
+- Run `uname -m` to determine system architecture. For us its `armv71`. 
+- Go to `https://github.com/docker/compose/releases/` and find correct release and architecture.
+
 - Run `sudo curl -SL https://github.com/docker/compose/releases/download/v2.12.2/docker-compose-linux-armv7 -o /usr/local/bin/docker-compose`
 - Make it executable `sudo chmod +x /usr/local/bin/docker-compose`
 - Check intallation `docker-compose --version`
