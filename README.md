@@ -157,6 +157,7 @@ If not installed:
 
 ## [Start Docker on boot](https://docs.docker.com/engine/install/linux-postinstall/#configure-docker-to-start-on-boot-with-systemd)
 
+- Check status of Docker `sudo systemctl status docker`
 - Run `sudo systemctl enable docker.service`
 - Run `sudo systemctl enable containerd.service`
 - Run `sudo reboot` to restart system
