@@ -54,7 +54,7 @@ If you are still using the default username `pi` with default password `raspberr
 
 - Create new user by running `sudo adduser <account_name>`
 - Give sudo by running `sudo usermod -a -G adm,dialout,cdrom,sudo,audio,video,plugdev,games,users,input,netdev,gpio,i2c,spi <account_name>`
-- Check sudo by running `sudo su - alice`
+- Check sudo by running `sudo su - <username>`
 
 Finally, check the new user is capable of logging in to the raspberrypi using a new terminal and is able to use sudo by running `sudo whoami`.
 
