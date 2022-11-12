@@ -3,7 +3,7 @@
 1. [ Setting Up Raspberry Pi ](#setuppi)
 2. [ Securing Raspberry Pi ](#securingpi)
 3. [ Installing Git ](#installinggit)
-4. [ Installing Docker and Docker Compose ](#installingdocker)
+4. [ Docker and Docker Compose ](#installingdocker)
 5. [ Pihole and Unbound with Docker Compose ](#piholeandunboundwithdockercompose)
 
 <a name="setuppi"></a>
@@ -138,33 +138,34 @@ You can also tell git what text editor you'd like to use, for example this sets 
 
 <a name="installingdocker"></a>
 
-# Installing Docker and Docker Compose
+# Docker and Docker Compose
 
-### Sources
+## [Installing Docker](https://docs.docker.com/engine/install/debian/#install-using-the-convenience-script)
 
-https://www.raspberrypi.org/blog/docker-comes-to-raspberry-pi/  
-https://blog.alexellis.io/getting-started-with-docker-on-raspberry-pi/  
-https://sanderh.dev/setup-Docker-and-Docker-Compose-on-Raspberry-Pi/  
-https://dev.to/rohansawant/installing-docker-and-docker-compose-on-the-raspberry-pi-in-5-simple-steps-3mgl  
-https://www.zuidwijk.com/blog/installing-docker-and-docker-compose-on-a-raspberry-pi-4/
+- Run `curl -fsSL https://get.docker.com -o get-docker.sh`
+- Preview script steps in dry-run mode by running `DRY_RUN=1 sudo sh ./get-docker.sh`
+- Run `sudo sh get-docker.sh`
 
-### Install Docker
+## [Setup docker usergroup](https://docs.docker.com/engine/install/linux-postinstall/#manage-docker-as-a-non-root-user)
 
-Run `curl -sSL https://get.docker.com | sh`.
+- Run `sudo groupadd docker`
+- Add user to group `sudo usermod -aG docker <username>`
+- Re-log user `logout`
+- Check usergroup `grep '<username>' /etc/group`
 
-Then add your user to the docker usergroup by running `sudo gpasswd -a pi docker` - replacing pi with whatever account you use docker on your raspberry pi. Logout using `logout` command and log back in to make sure the group setting is applied. (You can check that your username is in the right groups using this command `grep '<username>' /etc/group`.)
+## Verify docker installation
 
-Now test docker is installed with `docker version`.
+- Test docker is installed with `docker version`.
+- Check that your user can run a docker container by running the hello-world container, `docker run hello-world`. 
+- Afterwards, clean up by removing the container and the hello-world image by firstly getting the container id by running `docker ps -a`. Then force remove the container by running `docker rm -f <container id>` which will stop and remove it. Finally, remove the downloaded image by running `docker image rm hello-world`.
 
-You can also check that your user can run a docker container by running the hello-world container, `docker run hello-world`. Afterwards, clean up by removing the container and the hello-world image by firstly getting the container id by running `docker ps -a`. Then force remove the container by running `docker rm -f <container id>` which will stop and remove it. Finally, remove the downloaded image by running `docker image rm hello-world`.
-
-### Install Docker Compose
+## Install Docker Compose
 
 Run `sudo apt install -y libffi-dev libssl-dev python3 python3-pip`, then `sudo apt remove python-configparser`, and finally run `sudo pip3 -v install docker-compose`.
 
 Reboot the pi by running `sudo reboot`.
 
-### Dump of Common Docker Commands
+### Dump of commands
 
 `docker ps -a`  
 `docker stop <container-id>`  
