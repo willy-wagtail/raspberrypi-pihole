@@ -87,7 +87,7 @@ Automatically update ssh everyday at midnight:
 Allow or deny specific users by altering the sshd configuration:
 
 - Run `sudo nano /etc/ssh/sshd_config` to open config
-- Allow users to ssh like this, `AllowUsers alice bob`, or deny users to ssh like this, `DenyUsers jane john`
+- At the bottom, allow users to ssh like this, `AllowUsers alice bob`, or deny users to ssh like this, `DenyUsers jane john`
 - Restart SSH by running`sudo systemctl restart ssh`
 
 ## Use key-based authentication
