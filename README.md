@@ -185,15 +185,6 @@ Reboot the pi by running `sudo reboot`.
 
 # Pihole and Unbound with Docker Compose
 
-### Sources
-
-https://hub.docker.com/r/pihole/pihole/  
-https://github.com/pi-hole/docker-pi-hole  
-https://docs.pi-hole.net/guides/dns/unbound/
-https://github.com/chriscrowe/docker-pihole-unbound  
-https://github.com/anudeepND/whitelist  
-https://discourse.pi-hole.net/t/solved-dns-resolution-is-currently-unavailable/33725/3
-
-### Start Pihole and Unbound in a single container
+## Start Pihole and Unbound in a single container
 
 Clone this git repository by running `git clone https://github.com/willypapa/raspberrypi-pihole-unbound-docker.git`. It will clone the files into `/raspberrypi-pihole-unbound-docker` directory. Change directory to `cd docker-pihole-unbound`. Follow the `README.md` in that directory.
