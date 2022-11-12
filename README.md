@@ -123,7 +123,7 @@ If you wanted to enable a service again, run `sudo systemctl enable --now blueto
 
 ## Install git
 
-- Run `sudo apt install -y git`
+- Run `sudo apt install git`
 - Check the installation by running `git --version`.
 
 ## Configuring git
