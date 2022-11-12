@@ -190,5 +190,5 @@ If not installed:
 
 ## Start Pihole and Unbound in a single container
 
-- Copy the files in `./docker-pihole-unbound` directory either by git cloning or just copying.
+- Copy the files in `./docker-pihole-unbound` directory either by `git clone <this repo name> pihole` or just copying the files manually.
 - Follow the `README.md` in that directory.
