@@ -160,11 +160,11 @@ If not installed:
 - Check that your user can run a docker container by running the hello-world container, `docker run hello-world`. 
 - Afterwards, clean up by removing the container and the hello-world image by firstly getting the container id by running `docker ps -a`. Then force remove the container by running `docker rm -f <container id>` which will stop and remove it. Finally, remove the downloaded image by running `docker image rm hello-world`.
 
-## Install Docker Compose
+## [Install Compose](https://docs.docker.com/compose/install/other/#on-linux)
 
-Run `sudo apt install -y libffi-dev libssl-dev python3 python3-pip`, then `sudo apt remove python-configparser`, and finally run `sudo pip3 -v install docker-compose`.
-
-Reboot the pi by running `sudo reboot`.
+- Run `sudo curl -SL https://github.com/docker/compose/releases/download/v2.12.2/docker-compose-linux-x86_64 -o /usr/local/bin/docker-compose`
+- Make it executable `sudo chmod +x /usr/local/bin/docker-compose`
+- Check intallation `docker-compose --version`
 
 ### Dump of commands
 
