@@ -79,7 +79,7 @@ We could delete the pi accound instead of locking it, but some software may stil
 
 Automatically update ssh everyday at midnight:
 
-- Run `sudo crontab -e`
+- Run `sudo crontab -e`, select 1
 - Add this to bottom of file: `0 0 * * * apt install openssh-server`
 
 ### Restrict ssh users 
