@@ -94,7 +94,7 @@ Allow or deny specific users by altering the sshd configuration:
 
 ### Set up public-private key
 
-See [here](sudo systemctl restart ssh).
+See [here](https://www.raspberrypi.com/documentation/computers/configuration.html#using-key-based-authentication).
 
 ### Disable password authentication
 
@@ -105,6 +105,7 @@ See [here](sudo systemctl restart ssh).
   PasswordAuthentication no
   UsePAM no
   ```
+- Reload ssh `sudo service ssh reload`
 
 ### Kill unnecessary system services
 
