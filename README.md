@@ -190,6 +190,5 @@ If not installed:
 
 ## Start Pihole and Unbound in a single container
 
-- Clone this git repository by running `git clone https://github.com/willy-wagtail/raspberrypi-pihole-unbound-docker.git pihole`. It will clone the files into `/pihole` directory. 
-- Change directory to `cd pihole/docker-pihole-unbound`
+- Copy the files in `./docker-pihole-unbound` directory either by git cloning or just copying.
 - Follow the `README.md` in that directory.
