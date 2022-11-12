@@ -142,8 +142,10 @@ You can also tell git what text editor you'd like to use, for example this sets 
 
 ## [Installing Docker](https://docs.docker.com/engine/install/debian/#install-using-the-convenience-script)
 
+- Check Docker is already installed or not by running `docker version`
+
+If not installed:
 - Run `curl -fsSL https://get.docker.com -o get-docker.sh`
-- Preview script steps in dry-run mode by running `DRY_RUN=1 sudo sh ./get-docker.sh`
 - Run `sudo sh get-docker.sh`
 
 ## [Setup docker usergroup](https://docs.docker.com/engine/install/linux-postinstall/#manage-docker-as-a-non-root-user)
@@ -155,7 +157,6 @@ You can also tell git what text editor you'd like to use, for example this sets 
 
 ## Verify docker installation
 
-- Test docker is installed with `docker version`.
 - Check that your user can run a docker container by running the hello-world container, `docker run hello-world`. 
 - Afterwards, clean up by removing the container and the hello-world image by firstly getting the container id by running `docker ps -a`. Then force remove the container by running `docker rm -f <container id>` which will stop and remove it. Finally, remove the downloaded image by running `docker image rm hello-world`.
 
