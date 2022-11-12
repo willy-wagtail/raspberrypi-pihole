@@ -26,7 +26,7 @@ With the advanced options set, we can now write the Raspberry Pi OS image onto t
 
 Put the micro-SD card into the Raspberry Pi and then power it on.
 
-Wait a little for it to start up, then use your router or another network analyser tool (like Fing app) to find the IP address of the Raspberry Pi. Then ssh into it by running this command `ssh <username>@<IP address>`.
+Wait a little for it to start up, then either [use your router](https://www.raspberrypi.com/documentation/computers/remote-access.html#ip-address) or use any other means to find the IP address of the Raspberry Pi on your local network. Then ssh into it by running this command `ssh <username>@<IP address>`.
 
 ### Correctly shutting down the Raspberry Pi
 
@@ -46,35 +46,45 @@ Run the command `/usr/bin/tvservice -o` to disable HDMI. Also run `sudo nano /et
 
 # Securing Raspberry Pi
 
-### Sources
+## Change away from pi user
 
-https://www.raspberrypi.org/documentation/raspbian/updating.md  
-https://www.raspberrypi.org/documentation/configuration/security.md  
-https://www.youtube.com/watch?v=ukHcTCdOKrc
+If you are still using the default username `pi` with default password `raspberry`, make sure to [change your username and password](https://www.raspberrypi.com/documentation/computers/configuration.html#changing-your-username).
 
 ### Change password for pi user
 
-Run `sudo raspi-config`, go to “System Options”, and then “Password”.
+- Run `sudo raspi-config`, go to “System Options”, and then “Password”.
 
-### Set up ssh
+### Create a new administrative superuser account other than pi
 
-Either create empty file named “ssh” at root level on your SD card before the first boot, or run `sudo raspi-config`, then go to “Interface Options” and then “SSH”.
-
-### Create a new administrative superuser account
-
-Run `sudo adduser <account_name>`, then `sudo gpasswd -a <account_name> adm`, and then `sudo gpasswd -a <account_name> sudo`.
+- Create new user by running `sudo adduser <account_name>`
+- Give sudo by running `sudo usermod -a -G adm,dialout,cdrom,sudo,audio,video,plugdev,games,users,input,netdev,gpio,i2c,spi <account_name>`
+- Check sudo by running `sudo su - alice`
 
 Finally, check the new user is capable of logging in to the raspberrypi using a new terminal and is able to use sudo by running `sudo whoami`.
 
 ### Lock the pi account
 
-We could delete the pi accound instead of locking it, but some software still relies on the pi account to work.
+We could delete the pi accound instead of locking it, but some software may still rely on the pi account to work. Log onto the administrative superuser account set up in the previous step, then run `sudo passwd --lock pi`.
 
-Log onto the administrative superuser account set up in the previous step, then run `sudo passwd --lock pi`.
+## [Make sudo require a password](https://www.raspberrypi.com/documentation/computers/configuration.html#make-sudo-require-a-password)
 
-### Updating and upgrading rasp pi OS
+- Run `sudo visudo /etc/sudoers.d/010_pi-nopasswd`.
+- Make sure usernames with superuser rights have this entry: `<username> ALL=(ALL) PASSWD: ALL`
 
-Run `sudo apt update`, then `sudo apt full-upgrade -y`, and finally `sudo apt clean` to clean up the downloaded package files.
+## Updating OS
+
+- Run `sudo apt update`
+- Run `sudo apt full-upgrade -y`
+- Run `sudo apt clean` to clean up the downloaded package files.
+
+### Daily SSH updates
+
+Automatically update ssh everyday at midnight:
+
+- Run `sudo crontab -e`
+- Add this to bottom of file: `0 0 * * * apt install openssh-server`
+
+apt install openssh-server
 
 ### Kill unnecessary system services
 
