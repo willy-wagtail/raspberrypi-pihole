@@ -119,22 +119,18 @@ If you wanted to enable a service again, run `sudo systemctl enable --now blueto
 
 <a name="installinggit"></a>
 
-# Installing Git
+# [Installing git](https://projects.raspberrypi.org/en/projects/getting-started-with-git/3)
 
-### Sources
+## Install git
 
-https://projects.raspberrypi.org/en/projects/getting-started-with-git/3
+- Run `sudo apt install -y git`
+- Check the installation by running `git --version`.
 
-### Install git
+## Configuring git
 
-Run `sudo apt install -y git`, then check the installation by running `git --version`.
-
-### Configuring git
-
-Set up your username and email by running:
-`git config --global user.name "Harry Potter"`, then `git config --global user.email "h.potter@hogwarts.prof"`.
-
-Check the config by running `git config --list`.
+- Set up your username `git config --global user.name "Harry Potter"`
+- Set up your email `git config --global user.email "h.potter@hogwarts.prof"`.
+- Check the config by running `git config --list`.
 
 The configuration is stored in the `~/.gitconfig` file. Edit this directly, or via `git config` to make further changes if required.
 
