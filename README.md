@@ -195,7 +195,7 @@ If not installed:
 
 # Pihole and Unbound with Docker Compose
 
-## Start Pihole and Unbound in a single container
+Taking from [this](https://github.com/chriscrowe/docker-pihole-unbound), we build Pihole and Unbound in a single container.
 
-- Copy the files in `./docker-pihole-unbound` directory either by `git clone <this repo name> pihole` or just copying the files manually.
+- Copy the files in `./docker-pihole-unbound` directory in this repo either by `git clone <this repo name> pihole` or just copying the files manually.
 - Follow the `README.md` in that directory.
