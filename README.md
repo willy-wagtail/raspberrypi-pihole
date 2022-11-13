@@ -219,6 +219,7 @@ Taking from [this](https://github.com/chriscrowe/docker-pihole-unbound), we buil
 
 # [Setup VPN](https://docs.pivpn.io/install/)
 
-- Run `curl -L https://install.pivpn.io | bash`
-
-
+- If you don't have a static public IP address with your ISP, setup DDNS by following [these instructions](https://docs.pivpn.io/guides/dynamic-dns/)
+- Run `curl -L https://install.pivpn.io | bash` and follow instructions.
+- Run `pivpn add` to add clients.
+- Run `pivpn -qr` to generate a QR code for WireGuard client apps to scan
