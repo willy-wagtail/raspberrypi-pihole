@@ -5,7 +5,7 @@
 3. [ Installing Git ](#installinggit)
 4. [ Docker and Docker Compose ](#installingdocker)
 5. [ Pihole and Unbound with Docker Compose ](#piholeandunboundwithdockercompose)
-6. [ Setup VPN](#vpn)
+6. [ Setup VPN with PiVPN](#vpn)
 
 <a name="setuppi"></a>
 
@@ -217,7 +217,7 @@ Taking from [this](https://github.com/chriscrowe/docker-pihole-unbound), we buil
 
 <a name="vpn"></a>
 
-# [Setup VPN](https://docs.pivpn.io/install/)
+# [Setup VPN with PiVPN](https://docs.pivpn.io/install/)
 
 - If you don't have a static public IP address with your ISP, setup DDNS by following [these instructions](https://docs.pivpn.io/guides/dynamic-dns/)
 - Run `curl -L https://install.pivpn.io | bash` and follow instructions.
