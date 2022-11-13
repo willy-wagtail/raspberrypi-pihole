@@ -221,5 +221,6 @@ Taking from [this](https://github.com/chriscrowe/docker-pihole-unbound), we buil
 
 - If you don't have a static public IP address with your ISP, setup DDNS by following [these instructions](https://docs.pivpn.io/guides/dynamic-dns/)
 - Run `curl -L https://install.pivpn.io | bash` and follow instructions.
+- If Pi-hole was installed previously to  installing PiVPN, PiVPN may suggest using it for DNS. Otherwise, follow [these instructions](https://docs.pivpn.io/wireguard/#pi-hole-with-pivpn) to change the DNS setting in the PiVPN config file.
 - Run `pivpn add` to add clients.
 - Run `pivpn -qr` to generate a QR code for WireGuard client apps to scan
